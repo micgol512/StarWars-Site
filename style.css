@@ -1,0 +1,110 @@
+:root {
+  font-size: 16px;
+  /* Green */
+  --mainColor: rgb(0, 255, 21);
+  --mainBgColor: #1a1a1a77;
+  --btnBgHoverBgColor: rgba(0, 255, 0, 0.425);
+  --btnBgHoverColor: rgb(207, 241, 206);
+
+  /* Red */
+  /* --mainColor: red;
+  --btnBgHoverBgColor: rgba(255, 0, 0, 0.425);
+  --btnBgHoverColor: rgb(241, 206, 206); */
+
+  /* Blue */
+  /* --mainColor: rgb(0, 225, 255);
+  --mainBgColor: #1a1a1a77;
+  --btnBgHoverBgColor: rgba(0, 225, 255, 0.425);
+  --btnBgHoverColor: rgb(206, 241, 241); */
+
+  --transparent: rgba(0, 0, 0, 0);
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-size: minmax(0.5rem, 7vw);
+}
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 2rem;
+}
+#backgroud-image {
+  position: absolute;
+  background-image: url("./media/images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100dvw;
+  height: 100dvh;
+  z-index: -10;
+}
+
+.menuBtn {
+  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid var(--mainColor);
+  padding: 0.4rem;
+  color: var(--mainColor);
+  text-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+  min-width: 100px;
+  max-width: 200px;
+  height: 7vw;
+  min-height: 30px;
+  max-height: 100px;
+  background-color: #1a1a1a77;
+  border-radius: 15px;
+  transition: all 0.2s;
+  flex-grow: 1;
+}
+.menuBtn:hover,
+.menuBtn:focus {
+  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor),
+    0 0 30px var(--mainColor), 0 0 60px var(--mainColor),
+    0 0 120px var(--mainColor);
+  text-shadow: 0 0 5px black;
+  background-color: var(--btnBgHoverBgColor);
+  color: var(--btnBgHoverColor);
+}
+.menuBtn:focus {
+  background-color: var(--mainColor);
+  text-shadow: 225px black;
+}
+.card {
+  width: 190px;
+  height: 254px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+.card2 {
+  width: 190px;
+  height: 254px;
+  background-color: #1a1a1a;
+  border-radius: 15px;
+  transition: all 0.2s;
+}
+
+.card2:hover {
+  transform: scale(0.98);
+  border-radius: 20px;
+}
+
+.card:hover {
+  box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.3);
+}
+#menu {
+  display: flex;
+  gap: 10px;
+}
+.wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 15px;
+  width: Min(80vw, 1920px);
+  justify-content: space-around;
+  flex-grow: 1;
+  padding-top: 1rem;
+}
+.buttons {
+  align-self: center;
+}

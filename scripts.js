@@ -5501,7 +5501,6 @@ function formatDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Miesiące są indeksowane od 0
   const day = String(date.getDate()).padStart(2, "0");
-
   return `${year}-${month}-${day}`;
 }
 function createTable(key) {
@@ -5509,19 +5508,18 @@ function createTable(key) {
     document.getElementById("wrapper-content").remove();
     document.getElementById("wrapper-serch").remove();
   }
-
-  const searcher = document.createElement("div");
-  const div = document.createElement("div");
+  searcher = document.createElement("div");
+  const contenter = document.createElement("div");
   searcher.setAttribute("id", "wrapper-serch");
   searcher.setAttribute("class", "wrapper content");
-  div.setAttribute("id", "wrapper-content");
-  div.setAttribute("class", "wrapper content");
-  $body.append(searcher, div);
+  contenter.setAttribute("id", "wrapper-content");
+  contenter.setAttribute("class", "wrapper content");
+  $body.append(searcher, contenter);
   const tableContent = document.createElement("table");
   tableContent.setAttribute("id", "table-content");
   tableContent.innerHTML = `<thead id="table-head">
       </thead><tbody id="table-body"></tbody>`;
-  div.append(tableContent);
+  contenter.append(tableContent);
 
   const rowKeys = Object.keys(rowData[key][0]);
   const $thead = document.getElementById("table-head");
@@ -5569,94 +5567,187 @@ function createTable(key) {
   content.forEach((element, index) => {
     const $tbody = document.getElementById("table-body");
     $tbody.innerHTML += `<tr id="row-${index}">
-        <td>${index + 1}</td>
+        <td>${index + 1}.</td>
         <td>${element[head1]}</td>
         <td>${element[head2]}</td>
         <td>${element[head3]}</td>
         <td>${formatDate(new Date(element.created))}</td>  
       </tr>`;
     //<td id="action-buttons${index}" class="content-buttons"></td>
-    createBtn(document.getElementById(`row-${index}`));
+    createActions(document.getElementById(`row-${index}`));
   });
 }
-function createBtn(parent) {
+function createActions(parent) {
   const editBtn = document.createElement("button");
   editBtn.textContent = "Pokaż";
   editBtn.setAttribute("class", "showBtn");
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Usuń";
   deleteBtn.setAttribute("class", "deleteBtn");
+  const checkBox = document.createElement("input");
+  checkBox.setAttribute("class", "checkBoxSelect");
+  checkBox.setAttribute("type", "checkbox");
+  // checkBox.setAttribute("", "");
   const $td = document.createElement("td");
   $td.setAttribute("class", "content-buttons");
-  $td.append(editBtn, deleteBtn);
+  $td.append(editBtn, deleteBtn, checkBox);
   parent.append($td);
 }
+function setColor(select) {
+  switch (select) {
+    case 1:
+      $root.documentElement.style.setProperty("--mainColor", "rgb(0, 255, 21)");
+      $root.documentElement.style.setProperty(
+        "--btnBgHoverBgColor",
+        "rgba(0, 255, 0, 0.425)"
+      );
+      $root.documentElement.style.setProperty(
+        "--btnBgHoverColor",
+        "rgb(241, 206, 206)"
+      );
+      $root.documentElement.style.setProperty("--infoColor", " rgb(0, 70, 0)");
+      break;
+    case 2:
+      $root.documentElement.style.setProperty("--mainColor", "rgb(255, 0, 0)");
+      $root.documentElement.style.setProperty(
+        "--btnBgHoverBgColor",
+        "rgba(255, 0, 0, 0.425)"
+      );
+      $root.documentElement.style.setProperty(
+        "--btnBgHoverColor",
+        "rgb(241, 206, 206)"
+      );
+      $root.documentElement.style.setProperty("--infoColor", " rgb(70, 0, 0)");
+      break;
+    case 3:
+      $root.documentElement.style.setProperty(
+        "--mainColor",
+        "rgb(0, 225, 255)"
+      );
+      $root.documentElement.style.setProperty(
+        "--btnBgHoverBgColor",
+        "rgba(0, 225, 255, 0.425)"
+      );
+      $root.documentElement.style.setProperty(
+        "--btnBgHoverColor",
+        "rgb(206, 241, 241)"
+      );
+      $root.documentElement.style.setProperty("--infoColor", "rgb(0, 0, 70)");
+      break;
 
+    default:
+      break;
+  }
+}
+
+//////////////////  START ////////////////////
 // console.log(Object.keys(rowData));
 const menuBtnNames = Object.keys(rowData);
 const $body = document.body;
 const $root = document;
+let searcher = null;
+//header
+const header = document.createElement("header");
+header.innerHTML = `<div>Wpisz '<strong>YODA</strong>' albo '<strong>VADER</strong>' by skorzystać z tajnej mocy!!!</div>`;
+const radioWrapper = document.createElement("div");
+radioWrapper.setAttribute("id", "radio-wrapper");
+header.append(radioWrapper);
+const label = document.createElement("label");
+label.textContent = "Wybierz moc strony:";
+label.setAttribute("for", "selectSite");
+radioWrapper.append(label);
+//color site
+for (let i = 1; i <= 3; i++) {
+  const radio = document.createElement("input");
+  radio.id = "site-1";
+  radio.type = "radio";
+  radio.name = "selectSide";
+  radio.setAttribute("id", `site-${i}`);
+  radio.setAttribute("type", "radio");
+  radio.setAttribute("name", "selectSite");
+  radio.setAttribute("class", "radioSite");
+  i === 1 ? radio.setAttribute("checked", true) : null;
+  radioWrapper.append(radio);
+  radio.addEventListener("click", () => {
+    setColor(i);
+  });
+}
 // yoda lub vader
 $root.addEventListener("keypress", (key) => {
   console.log(key);
 });
-//przyciski menu
+//przyciski menu + start strony
 const menuBtnWrapper = document.createElement("div");
 menuBtnWrapper.setAttribute("class", "wrapper buttons");
-$body.append(menuBtnWrapper);
+const logo = document.createElement("img");
+logo.src = "./media/images/logo.png";
+logo.setAttribute("id", "logo");
+$body.append(header, menuBtnWrapper, logo);
+
 menuBtnNames.forEach((btnName, index) => {
   const btn = document.createElement("button");
   menuBtnWrapper.append(btn);
   btn.setAttribute("id", `menuBtn-${index}`);
   btn.setAttribute("class", `menuBtns`);
   btn.innerText = btnName.toUpperCase();
-  btn.addEventListener("click", () => {
-    btn.style.textShadow = "0 0 5px black";
-    btn.style.backgroundColor = "var(--mainColor)";
-    btn.style.fontWeight = "bold";
-    btn.style.scale = "1.1";
-    btn.style.color = "#fff";
 
+  btn.addEventListener("click", () => {
+    logo.remove();
+    for (let i = 0; i < menuBtnNames.length; i++) {
+      document.getElementById(`menuBtn-${i}`).setAttribute("class", `menuBtns`);
+      console.log();
+    }
+    btn.setAttribute("class", `menuBtns active`);
+    //logika tworzenia alert contentu po przycisku
     createTable(btnName);
     const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
-
     delBtnTab.forEach((btn, index) => {
       btn.addEventListener("click", () => {
         document.getElementById(`row-${index}`).remove();
       });
     });
     const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
-    //console.log(showBtnTab);
     showBtnTab.forEach((btn, index) => {
       btn.addEventListener("click", () => {
-        if (document.getElementById("customAlert")) {
-          document.getElementById("customAlert").remove();
-        }
-        const infoRow = rowData[btnName][index];
-        const alert = document.createElement("div");
-        alert.setAttribute("id", "customAlert");
-        alert.setAttribute("class", "alert");
-        alert.innerHTML = `
-      <div class="alert-content"><div class="alert-title"><span> ${
-        infoRow.name || infoRow.title
-      }</span>
-        <span class="closeBtn" id="closeAlertBtn">&times;</span>
-      </div>
-    </div>`;
-
-        $body.append(alert);
-        document.getElementById("customAlert").style.display = "block";
+        console.log(showBtnTab);
+        createAlert(btnName, index);
         document
           .getElementById("closeAlertBtn")
           .addEventListener("click", function () {
-            document.getElementById("customAlert").style.display = "none";
+            document.getElementById("customAlert").remove();
           });
       });
-      document
-        .getElementById("customAlert")
-        .addEventListener("click", function () {
-          document.getElementById("customAlert").style.display = "none";
-        });
+    });
+    const checkBoxTab = Array.from(
+      document.querySelectorAll(".checkBoxSelect")
+    );
+    let btnDelChecked = null;
+    checkBoxTab.forEach((check, index) => {
+      check.addEventListener("change", () => {
+        const isChecked = checkBoxTab.some((item) => item.checked);
+        if (!document.getElementById("btnDelChecked")) {
+          btnDelChecked = document.createElement("button");
+          btnDelChecked.textContent = "Usuń zaznaczone";
+          btnDelChecked.setAttribute("id", "btnDelChecked");
+
+          document.getElementById("wrapper-serch").prepend(btnDelChecked);
+        }
+        if (!isChecked) {
+          btnDelChecked.remove();
+        } else {
+          // const indexToDel = [];
+          // checkBoxTab.forEach((item, index) => {
+          //   if (item.checked === true) {
+          //     indexToDel.push(index);
+          //   }
+          // });
+          btnDelChecked.addEventListener("click", () => {
+            /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
+            document.getElementById(`row-${index}`).remove();
+            btnDelChecked.remove();
+          });
+        }
+      });
     });
   });
 });
@@ -5677,3 +5768,31 @@ menuBtnNames.forEach((btnName, index) => {
 //     document.getElementById("customAlert").style.display = "none";
 //   }
 // }
+function createAlert(btnName, index) {
+  if (document.getElementById("customAlert")) {
+    document.getElementById("customAlert").remove();
+  }
+  const infoRow = rowData[btnName][index];
+  const alert = document.createElement("div");
+  alert.setAttribute("id", "customAlert");
+  alert.setAttribute("class", "alert");
+  alert.innerHTML = `
+<div id="alert-content"><div class="alert-title"><span><strong> ${
+    infoRow.name || infoRow.title
+  }</strong></span>
+  <span class="closeBtn" id="closeAlertBtn">&times;</span>
+</div>
+</div>`;
+  $body.append(alert);
+
+  const alertContent = document.getElementById("alert-content");
+  alertContent.innerHTML += "<ul>";
+  Object.entries(infoRow).forEach(([key, value]) => {
+    if (typeof value === "object") {
+      value = [...value].join(", ");
+      console.log(value);
+    }
+    alertContent.innerHTML += `<li><strong>${key.toUpperCase()}:</strong>  ${value}</li>`;
+  });
+  alertContent.innerHTML += "</ul>";
+}

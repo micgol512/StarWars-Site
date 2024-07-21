@@ -2,7 +2,6 @@
   font-size: 16px;
   /* Green */
   --mainColor: rgb(0, 255, 21);
-  --mainBgColor: #1a1a1a77;
   --btnBgHoverBgColor: rgba(0, 255, 0, 0.425);
   --btnBgHoverColor: rgb(207, 241, 206);
 
@@ -10,37 +9,35 @@
   /* --mainColor: red;
   --btnBgHoverBgColor: rgba(255, 0, 0, 0.425);
   --btnBgHoverColor: rgb(241, 206, 206); */
-
   /* Blue */
-  /* --mainColor: rgb(0, 225, 255);
-  --mainBgColor: #1a1a1a77;
-  --btnBgHoverBgColor: rgba(0, 225, 255, 0.425);
-  --btnBgHoverColor: rgb(206, 241, 241); */
 
+  /* --mainColor: rgb(0, 225, 255);
+  --btnBgHoverBgColor: rgba(0, 225, 255, 0.425); 
+  --btnBgHoverColor: rgb(206, 241, 241);*/
+
+  --mainBgColor: #1a1a1a77;
   --transparent: rgba(0, 0, 0, 0);
 }
-* {
+body * {
   margin: 0;
   padding: 0;
-  font-size: minmax(0.5rem, 7vw);
+  font-size: minmax(0.5rem, 6vw);
+  color: var(--mainColor);
 }
 body {
   display: flex;
   flex-flow: column nowrap;
   gap: 2rem;
-}
-#backgroud-image {
-  position: absolute;
   background-image: url("./media/images/background.jpg");
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
-  width: 100dvw;
-  height: 100dvh;
-  z-index: -10;
+  background-position: center;
+  background-attachment: fixed;
+  width: 100%;
+  height: 100%;
 }
 
-.menuBtn {
+.menuBtns {
   box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid var(--mainColor);
@@ -52,46 +49,27 @@ body {
   height: 7vw;
   min-height: 30px;
   max-height: 100px;
-  background-color: #1a1a1a77;
+  background-color: var(--mainBgColor);
   border-radius: 15px;
   transition: all 0.2s;
   flex-grow: 1;
 }
-.menuBtn:hover,
-.menuBtn:focus {
+.menuBtns:hover {
   box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor),
     0 0 30px var(--mainColor), 0 0 60px var(--mainColor),
     0 0 120px var(--mainColor);
   text-shadow: 0 0 5px black;
   background-color: var(--btnBgHoverBgColor);
   color: var(--btnBgHoverColor);
+  /* color: black; */
 }
-.menuBtn:focus {
+/* .menuBtns:focus {
   background-color: var(--mainColor);
   text-shadow: 225px black;
-}
-.card {
-  width: 190px;
-  height: 254px;
-  border-radius: 20px;
-  transition: all 0.3s;
-}
-.card2 {
-  width: 190px;
-  height: 254px;
-  background-color: #1a1a1a;
-  border-radius: 15px;
-  transition: all 0.2s;
-}
+  font-weight: bold;
+  scale: 1.1;
+} */
 
-.card2:hover {
-  transform: scale(0.98);
-  border-radius: 20px;
-}
-
-.card:hover {
-  box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.3);
-}
 #menu {
   display: flex;
   gap: 10px;
@@ -100,11 +78,117 @@ body {
   display: flex;
   flex-flow: row wrap;
   gap: 15px;
-  width: Min(80vw, 1920px);
+  width: Min(75vw, 1920px);
   justify-content: space-around;
   flex-grow: 1;
   padding-top: 1rem;
 }
 .buttons {
   align-self: center;
+  max-height: 120px;
+}
+.content {
+  display: flex;
+  background-color: var(--mainBgColor);
+  align-self: center;
+  /* box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor); */
+  background-color: var(--mainBgColor);
+  border: 1px solid var(--mainColor);
+  padding: 0.4rem;
+  color: var(--mainColor);
+  text-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+  background-color: var(--mainBgColor);
+  border-radius: 15px;
+  transition: all 0.2s;
+  gap: 100px;
+}
+.item {
+  width: 100%;
+  border: 1px solid black;
+}
+table {
+  padding: 0.25rem;
+  width: 100%;
+}
+#table-head * {
+  background-color: var(--mainColor);
+  color: rgb(240, 240, 240);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+  text-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+}
+#table-body * {
+  padding: 0.75rem;
+}
+.content-buttons {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.content-buttons button {
+  width: 100%;
+}
+
+/* message Box */
+.alert {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  color: black;
+}
+.alert-title {
+  left: -1px;
+  position: absolute;
+  background-color: var(--mainColor);
+  width: 100%;
+  border: 1px solid var(--mainColor);
+  border-radius: 0.5rem 0.5rem 0 0;
+  margin-bottom: 1rem;
+  margin-top: -1.15rem;
+  color: black;
+}
+
+.alert-content {
+  position: relative;
+  background-color: #fff;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding-bottom: 1rem;
+  border: 1px solid var(--mainColor);
+  border-radius: 0 0 0.5rem 0.5rem;
+  width: min(75%, 1920px); /* Could be more or less, depending on screen size */
+  /* max-width: 1920px; */
+}
+/* .alert-content::first-line {
+  background-color: var(--mainColor);
+  color: black;
+} */
+.closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: 0.25rem;
+  color: var(--mainBgColor);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.closeBtn:hover,
+.closeBtn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+@media (max-width: 900px) {
+  :root {
+  }
+
+  #table-body * {
+    padding: 0.1rem;
+  }
 }

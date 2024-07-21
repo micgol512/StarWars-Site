@@ -5497,14 +5497,183 @@ const rowData = {
     },
   ],
 };
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Miesiące są indeksowane od 0
+  const day = String(date.getDate()).padStart(2, "0");
 
-Array.prototype.setAttributes = function (...strings) {};
-console.log(Object.keys(rowData));
+  return `${year}-${month}-${day}`;
+}
+function createTable(key) {
+  if (document.getElementById("wrapper-content")) {
+    document.getElementById("wrapper-content").remove();
+    document.getElementById("wrapper-serch").remove();
+  }
+
+  const searcher = document.createElement("div");
+  const div = document.createElement("div");
+  searcher.setAttribute("id", "wrapper-serch");
+  searcher.setAttribute("class", "wrapper content");
+  div.setAttribute("id", "wrapper-content");
+  div.setAttribute("class", "wrapper content");
+  $body.append(searcher, div);
+  const tableContent = document.createElement("table");
+  tableContent.setAttribute("id", "table-content");
+  tableContent.innerHTML = `<thead id="table-head">
+      </thead><tbody id="table-body"></tbody>`;
+  div.append(tableContent);
+
+  const rowKeys = Object.keys(rowData[key][0]);
+  const $thead = document.getElementById("table-head");
+  let head1 = "name";
+  let head2, head3;
+  switch (key.toLowerCase()) {
+    case "vehicles":
+      head2 = rowKeys[1];
+      head3 = rowKeys[2];
+      break;
+    case "starships":
+      head2 = rowKeys[1];
+      head3 = rowKeys[2];
+      break;
+    case "species":
+      head2 = rowKeys[1];
+      head3 = rowKeys[2];
+      break;
+    case "planets":
+      head2 = rowKeys[1];
+      head3 = rowKeys[6];
+      break;
+    case "people":
+      head2 = rowKeys[1];
+      head3 = rowKeys[7];
+      break;
+    case "films":
+      head1 = rowKeys[0];
+      head2 = rowKeys[2];
+      head3 = rowKeys[4];
+      break;
+    default:
+      break;
+  }
+  $thead.innerHTML = `<tr>
+        <th>ID</th>
+        <th>${head1.toUpperCase()}</th>
+        <th>${head2.toUpperCase()}</th>
+        <th>${head3.toUpperCase()}</th>
+        <th>CREATED</th>
+        <th>ACTIONS</th>
+      </tr>`;
+
+  const content = rowData[key];
+  content.forEach((element, index) => {
+    const $tbody = document.getElementById("table-body");
+    $tbody.innerHTML += `<tr id="row-${index}">
+        <td>${index + 1}</td>
+        <td>${element[head1]}</td>
+        <td>${element[head2]}</td>
+        <td>${element[head3]}</td>
+        <td>${formatDate(new Date(element.created))}</td>  
+      </tr>`;
+    //<td id="action-buttons${index}" class="content-buttons"></td>
+    createBtn(document.getElementById(`row-${index}`));
+  });
+}
+function createBtn(parent) {
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Pokaż";
+  editBtn.setAttribute("class", "showBtn");
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Usuń";
+  deleteBtn.setAttribute("class", "deleteBtn");
+  const $td = document.createElement("td");
+  $td.setAttribute("class", "content-buttons");
+  $td.append(editBtn, deleteBtn);
+  parent.append($td);
+}
+
+// console.log(Object.keys(rowData));
 const menuBtnNames = Object.keys(rowData);
 const $body = document.body;
+const $root = document;
+// yoda lub vader
+$root.addEventListener("keypress", (key) => {
+  console.log(key);
+});
+//przyciski menu
 const menuBtnWrapper = document.createElement("div");
 menuBtnWrapper.setAttribute("class", "wrapper buttons");
 $body.append(menuBtnWrapper);
 menuBtnNames.forEach((btnName, index) => {
-  menuBtnWrapper.innerHTML += `<button id="menuBtn${index}" class="menuBtn">${btnName.toUpperCase()}</button>`;
+  const btn = document.createElement("button");
+  menuBtnWrapper.append(btn);
+  btn.setAttribute("id", `menuBtn-${index}`);
+  btn.setAttribute("class", `menuBtns`);
+  btn.innerText = btnName.toUpperCase();
+  btn.addEventListener("click", () => {
+    btn.style.textShadow = "0 0 5px black";
+    btn.style.backgroundColor = "var(--mainColor)";
+    btn.style.fontWeight = "bold";
+    btn.style.scale = "1.1";
+    btn.style.color = "#fff";
+
+    createTable(btnName);
+    const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
+
+    delBtnTab.forEach((btn, index) => {
+      btn.addEventListener("click", () => {
+        document.getElementById(`row-${index}`).remove();
+      });
+    });
+    const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
+    //console.log(showBtnTab);
+    showBtnTab.forEach((btn, index) => {
+      btn.addEventListener("click", () => {
+        if (document.getElementById("customAlert")) {
+          document.getElementById("customAlert").remove();
+        }
+        const infoRow = rowData[btnName][index];
+        const alert = document.createElement("div");
+        alert.setAttribute("id", "customAlert");
+        alert.setAttribute("class", "alert");
+        alert.innerHTML = `
+      <div class="alert-content"><div class="alert-title"><span> ${
+        infoRow.name || infoRow.title
+      }</span>
+        <span class="closeBtn" id="closeAlertBtn">&times;</span>
+      </div>
+    </div>`;
+
+        $body.append(alert);
+        document.getElementById("customAlert").style.display = "block";
+        document
+          .getElementById("closeAlertBtn")
+          .addEventListener("click", function () {
+            document.getElementById("customAlert").style.display = "none";
+          });
+      });
+      document
+        .getElementById("customAlert")
+        .addEventListener("click", function () {
+          document.getElementById("customAlert").style.display = "none";
+        });
+    });
+  });
 });
+
+// //////
+
+// document.getElementById("showAlertBtn").addEventListener("click", function () {
+//   document.getElementById("customAlert").style.display = "block";
+// });
+
+// document.getElementById("closeAlertBtn").addEventListener("click", function () {
+//   document.getElementById("customAlert").style.display = "none";
+// });
+
+// // Close the alert box when clicking anywhere outside of it
+// window.onclick = function (event) {
+//   if (event.target == document.getElementById("customAlert")) {
+//     document.getElementById("customAlert").style.display = "none";
+//   }
+// }

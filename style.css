@@ -168,16 +168,31 @@ header {
   background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
   color: var(--notBlack);
 }
+/* wystylizować WRAPPER */
+#alert-wrapper {
+  display: flex;
+  width: 90%;
+  height: 70%;
+  position: relative;
+  flex-flow: column nowrap;
+  gap: 10px;
+  margin: 10% auto;
+  /* border: 1px solid var(--mainColor); */
+  border-radius: 0 0 0.5rem 0.5rem;
+  width: min(75%, 1920px);
+  height: 70%;
+}
 .alert-title {
-  left: -1px;
-  position: absolute;
+  /* left: 0;
+  top: 0;
+  position: absolute; */
   background-color: var(--mainColor);
   width: 100%;
   border: 1px solid var(--mainColor);
   border-bottom: 1px solid var(--infoColor);
   border-radius: 0.5rem 0.5rem 0 0;
-  margin-bottom: 1rem;
-  margin-top: -1.8rem;
+  /* margin-bottom: 1rem;
+  margin-top: -3rem; */
 }
 .alert-title span strong {
   padding-left: 1rem;
@@ -188,12 +203,24 @@ header {
 #alert-content {
   position: relative;
   background-color: rgb(245, 245, 245);
-  margin: 10% auto;
-  padding-bottom: 1rem;
+  padding: 0.5rem 0.5rem;
   border: 1px solid var(--mainColor);
   border-radius: 0 0 0.5rem 0.5rem;
-  width: min(75%, 1920px); /* Could be more or less, depending on screen size */
+
+  height: auto;
+  max-height: 60%;
   /* max-width: 1920px; */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#alert-content::-webkit-scrollbar {
+  background-color: var(--infoColor);
+  border-radius: 0 0 0.5rem;
+}
+
+#alert-content::-webkit-scrollbar-thumb {
+  background-color: var(--mainColor);
+  border-radius: 0.5rem;
 }
 
 .closeBtn {

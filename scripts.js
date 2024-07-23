@@ -5576,7 +5576,56 @@ function createTable(key) {
     //<td id="action-buttons${index}" class="content-buttons"></td>
     createActions(document.getElementById(`row-${index}`));
   });
+
+  const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
+  delBtnTab.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      document.getElementById(`row-${index}`).remove();
+    });
+  });
+  const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
+  showBtnTab.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      console.log(key);
+      createAlert(key, index);
+      document
+        .getElementById("closeAlertBtn")
+        .addEventListener("click", function () {
+          document.getElementById("customAlert").remove();
+        });
+    });
+  });
+  const checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  let btnDelChecked = null;
+  checkBoxTab.forEach((check, index) => {
+    check.addEventListener("change", () => {
+      const isChecked = checkBoxTab.some((item) => item.checked);
+      if (!document.getElementById("btnDelChecked")) {
+        btnDelChecked = document.createElement("button");
+        btnDelChecked.textContent = "Usuń zaznaczone";
+        btnDelChecked.setAttribute("id", "btnDelChecked");
+
+        document.getElementById("wrapper-serch").prepend(btnDelChecked);
+      }
+      if (!isChecked) {
+        btnDelChecked.remove();
+      } else {
+        // const indexToDel = [];
+        // checkBoxTab.forEach((item, index) => {
+        //   if (item.checked === true) {
+        //     indexToDel.push(index);
+        //   }
+        // });
+        btnDelChecked.addEventListener("click", () => {
+          /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
+          document.getElementById(`row-${index}`).remove();
+          btnDelChecked.remove();
+        });
+      }
+    });
+  });
 }
+
 function createActions(parent) {
   const editBtn = document.createElement("button");
   editBtn.textContent = "Pokaż";
@@ -5639,6 +5688,42 @@ function setColor(select) {
       break;
   }
 }
+function createAlert(btnName, index) {
+  if (document.getElementById("customAlert")) {
+    document.getElementById("customAlert").remove();
+  }
+  const infoRow = rowData[btnName][index];
+  const alert = document.createElement("div");
+  alert.setAttribute("id", "customAlert");
+  alert.setAttribute("class", "alert");
+  // alert.innerHTML = `
+  // <div id="alert-content"><div class="alert-title"><span><strong> ${
+  //   infoRow.name || infoRow.title
+  // }</strong></span>
+  //   <span class="closeBtn" id="closeAlertBtn">&times;</span>
+  // </div>
+  // </div>`;
+  alert.innerHTML = `<div id="alert-wrapper">
+    <div class="alert-title"><span><strong> ${
+      infoRow.name || infoRow.title
+    }</strong></span>
+    <span class="closeBtn" id="closeAlertBtn">&times;</span>
+  </div>
+  <div id="alert-content">
+  </div></div>`;
+  $body.append(alert);
+
+  const alertContent = document.getElementById("alert-content");
+  alertContent.innerHTML += "<ul>";
+  Object.entries(infoRow).forEach(([key, value]) => {
+    if (typeof value === "object") {
+      value = [...value].join(", ");
+      console.log(value);
+    }
+    alertContent.innerHTML += `<li><strong>${key.toUpperCase()}:</strong>  ${value}</li>`;
+  });
+  alertContent.innerHTML += "</ul>";
+}
 
 //////////////////  START ////////////////////
 // console.log(Object.keys(rowData));
@@ -5673,8 +5758,22 @@ for (let i = 1; i <= 3; i++) {
   });
 }
 // yoda lub vader
-$root.addEventListener("keypress", (key) => {
-  console.log(key);
+const keyVader = "vader";
+const keyYoda = "yoda";
+let keyCatcher = ["."];
+const vaderSound = new Audio("./media/audio/vader.mp3");
+const yodaSound = new Audio("./media/audio/yoda.mp3");
+// vaderSound.loop = false;
+document.addEventListener("keypress", ({ key }) => {
+  keyCatcher.push(key);
+  if (keyCatcher.length > keyVader.length) {
+    keyCatcher.shift();
+  }
+  if (keyCatcher.join("").slice(1) === keyYoda) {
+    yodaSound.play();
+  } else if (keyCatcher.join("") === keyVader) {
+    vaderSound.play();
+  }
 });
 //przyciski menu + start strony
 const menuBtnWrapper = document.createElement("div");
@@ -5700,55 +5799,6 @@ menuBtnNames.forEach((btnName, index) => {
     btn.setAttribute("class", `menuBtns active`);
     //logika tworzenia alert contentu po przycisku
     createTable(btnName);
-    const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
-    delBtnTab.forEach((btn, index) => {
-      btn.addEventListener("click", () => {
-        document.getElementById(`row-${index}`).remove();
-      });
-    });
-    const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
-    showBtnTab.forEach((btn, index) => {
-      btn.addEventListener("click", () => {
-        console.log(showBtnTab);
-        createAlert(btnName, index);
-        document
-          .getElementById("closeAlertBtn")
-          .addEventListener("click", function () {
-            document.getElementById("customAlert").remove();
-          });
-      });
-    });
-    const checkBoxTab = Array.from(
-      document.querySelectorAll(".checkBoxSelect")
-    );
-    let btnDelChecked = null;
-    checkBoxTab.forEach((check, index) => {
-      check.addEventListener("change", () => {
-        const isChecked = checkBoxTab.some((item) => item.checked);
-        if (!document.getElementById("btnDelChecked")) {
-          btnDelChecked = document.createElement("button");
-          btnDelChecked.textContent = "Usuń zaznaczone";
-          btnDelChecked.setAttribute("id", "btnDelChecked");
-
-          document.getElementById("wrapper-serch").prepend(btnDelChecked);
-        }
-        if (!isChecked) {
-          btnDelChecked.remove();
-        } else {
-          // const indexToDel = [];
-          // checkBoxTab.forEach((item, index) => {
-          //   if (item.checked === true) {
-          //     indexToDel.push(index);
-          //   }
-          // });
-          btnDelChecked.addEventListener("click", () => {
-            /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
-            document.getElementById(`row-${index}`).remove();
-            btnDelChecked.remove();
-          });
-        }
-      });
-    });
   });
 });
 
@@ -5768,31 +5818,3 @@ menuBtnNames.forEach((btnName, index) => {
 //     document.getElementById("customAlert").style.display = "none";
 //   }
 // }
-function createAlert(btnName, index) {
-  if (document.getElementById("customAlert")) {
-    document.getElementById("customAlert").remove();
-  }
-  const infoRow = rowData[btnName][index];
-  const alert = document.createElement("div");
-  alert.setAttribute("id", "customAlert");
-  alert.setAttribute("class", "alert");
-  alert.innerHTML = `
-<div id="alert-content"><div class="alert-title"><span><strong> ${
-    infoRow.name || infoRow.title
-  }</strong></span>
-  <span class="closeBtn" id="closeAlertBtn">&times;</span>
-</div>
-</div>`;
-  $body.append(alert);
-
-  const alertContent = document.getElementById("alert-content");
-  alertContent.innerHTML += "<ul>";
-  Object.entries(infoRow).forEach(([key, value]) => {
-    if (typeof value === "object") {
-      value = [...value].join(", ");
-      console.log(value);
-    }
-    alertContent.innerHTML += `<li><strong>${key.toUpperCase()}:</strong>  ${value}</li>`;
-  });
-  alertContent.innerHTML += "</ul>";
-}

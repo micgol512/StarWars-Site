@@ -1,10 +1,11 @@
 :root {
   font-size: 16px;
   --mainColor: rgb(0, 255, 0);
-  --btnBgHoverBgColor: rgba(0, 255, 0, 0.425);
-  --btnBgHoverColor: rgb(207, 241, 206);
+  --btnBgHoverColor: rgba(0, 255, 0, 0.425);
+  --btnHoverColor: rgb(207, 241, 206);
   --infoColor: rgb(0, 70, 0);
-  --mainBgColor: rgba(26, 26, 26, 0.467);
+  --btnBgColor: rgba(10, 10, 10, 0.5);
+  --mainBgColor: rgba(10, 10, 10, 0.863);
   --transparent: rgba(0, 0, 0, 0);
   --notWhite: rgb(245, 245, 245);
   --notBlack: rgb(10, 10, 10);
@@ -35,12 +36,12 @@ header {
   align-self: center;
   width: Min(75vw, 1920px);
   background-color: var(--notBlack);
-  color: var(--btnBgHoverBgColor);
+  color: var(--btnBgHoverColor);
   text-shadow: 0 0 15px var(--notWhite);
 }
 .menuBtns {
   box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
-  background-color: var(--mainBgColor);
+  background-color: var(--btnBgColor);
   border: 1px solid var(--mainColor);
   padding: 0.4rem;
   color: var(--mainColor);
@@ -59,8 +60,8 @@ header {
     0 0 30px var(--mainColor), 0 0 60px var(--mainColor),
     0 0 120px var(--mainColor);
   text-shadow: 0 0 5px black;
-  background-color: var(--btnBgHoverBgColor);
-  color: var(--btnBgHoverColor);
+  background-color: var(--btnBgHoverColor);
+  color: var(--btnHoverColor);
 }
 
 .active,
@@ -69,7 +70,7 @@ header {
   text-shadow: 225px black;
   font-weight: bold;
   scale: 1.2;
-  color: var(--btnBgHoverColor);
+  color: var(--btnHoverColor);
   text-shadow: 0 0 5px black;
 }
 #menu {
@@ -101,6 +102,9 @@ header {
   color: var(--mainColor);
   background-color: var(--mainBgColor);
   border-radius: 1rem;
+}
+#wrapper-content {
+  background-color: var(--mainBgColor);
 }
 .item {
   width: 100%;
@@ -334,6 +338,64 @@ li::before {
     rgba(51, 231, 255, 0.3) 28%,
     rgba(0, 130, 153, 0) 70%
   );
+}
+.wrapper-searcher {
+}
+.sercher-by {
+}
+#input-search-index {
+}
+#input-search-text {
+}
+#wrapper-page-changer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--mainColor);
+}
+.btn-pages {
+  width: 1rem;
+  height: 1.5rem;
+  border-radius: 0.3rem;
+  border: 1px solid;
+  color: var(--infoColor);
+}
+.btn-pages:active {
+  color: var(--mainColor);
+}
+.btn-pages:disabled {
+  color: gray;
+  border: 1px solid black;
+}
+#curr-page {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.3rem;
+  border: 1px solid;
+  color: var(--infoColor);
+  padding-left: 3px;
+}
+#curr-page::placeholder {
+  color: var(--btnBgColor);
+}
+#curr-page:focus {
+  border: 1px solid;
+}
+#amount-item {
+  height: 1.5rem;
+  background-color: var(--infoColor);
+  border-radius: 0.3rem;
+  color: var(--mainColor);
+}
+#amount-item option {
+  appearance: none;
+  background-color: var(--mainBgColor);
+  border-radius: 0.3rem;
+}
+
+#amount-item option:checked {
+  background-color: var(--transparent);
 }
 
 /* MEDIA */

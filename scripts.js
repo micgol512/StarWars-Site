@@ -5508,10 +5508,19 @@ function createTable(key) {
     document.getElementById("wrapper-content").remove();
     document.getElementById("wrapper-serch").remove();
   }
-  searcher = document.createElement("div");
+  const searcher = document.createElement("div");
   const contenter = document.createElement("div");
   searcher.setAttribute("id", "wrapper-serch");
   searcher.setAttribute("class", "wrapper content");
+  searcher.innerHTML = `
+  <div class="wrapper-searcher">
+  <label for="input-search-index">Search by index</label>
+  <input id="input-search-index" class="sercher-by"/>
+  </div>
+  <div class="wrapper-searcher">
+  <label for="input-search-text">Search by text</label>
+  <input id="input-search-text" class="sercher-by" />
+  </div>`;
   contenter.setAttribute("id", "wrapper-content");
   contenter.setAttribute("class", "wrapper content");
   $body.append(searcher, contenter);
@@ -5575,6 +5584,9 @@ function createTable(key) {
       </tr>`;
     //<td id="action-buttons${index}" class="content-buttons"></td>
     createActions(document.getElementById(`row-${index}`));
+    if (index > 9) {
+      document.getElementById(`row-${index}`).style.display = "none";
+    }
   });
 
   const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
@@ -5604,8 +5616,7 @@ function createTable(key) {
         btnDelChecked = document.createElement("button");
         btnDelChecked.textContent = "Usuń zaznaczone";
         btnDelChecked.setAttribute("id", "btnDelChecked");
-
-        document.getElementById("wrapper-serch").prepend(btnDelChecked);
+        document.getElementById("wrapper-serch").append(btnDelChecked);
       }
       if (!isChecked) {
         btnDelChecked.remove();
@@ -5624,6 +5635,21 @@ function createTable(key) {
       }
     });
   });
+  const pagesWrapper = document.createElement("div");
+  pagesWrapper.setAttribute("id", "wrapper-page-changer");
+  pagesWrapper.innerHTML = `
+  <button class="btn-pages" disabled>❰</button>
+    <input id="curr-page" placeholder="1" />
+    <button class="btn-pages">❱</button>
+    <span>z </span><span id="all-pages">2</span>
+    <select id="amount-item" name="pages">
+        <option value="10">10</option>
+        <option value="20">20</option>
+    </select>
+  `;
+  // ❰❱𒌍𒌋⫷⫸ ↪︎ ↩︎
+  searcher.append(pagesWrapper);
+  // contenter.append(pagesWrapper);
 }
 
 function createActions(parent) {
@@ -5647,11 +5673,11 @@ function setColor(select) {
     case 1:
       $root.documentElement.style.setProperty("--mainColor", "rgb(0, 255, 21)");
       $root.documentElement.style.setProperty(
-        "--btnBgHoverBgColor",
+        "--btnBgHoverColor",
         "rgba(0, 255, 0, 0.425)"
       );
       $root.documentElement.style.setProperty(
-        "--btnBgHoverColor",
+        "--btnHoverColor",
         "rgb(241, 206, 206)"
       );
       $root.documentElement.style.setProperty("--infoColor", " rgb(0, 70, 0)");
@@ -5659,11 +5685,11 @@ function setColor(select) {
     case 2:
       $root.documentElement.style.setProperty("--mainColor", "rgb(255, 0, 0)");
       $root.documentElement.style.setProperty(
-        "--btnBgHoverBgColor",
+        "--btnBgHoverColor",
         "rgba(255, 0, 0, 0.425)"
       );
       $root.documentElement.style.setProperty(
-        "--btnBgHoverColor",
+        "--btnHoverColor",
         "rgb(241, 206, 206)"
       );
       $root.documentElement.style.setProperty("--infoColor", " rgb(70, 0, 0)");
@@ -5674,11 +5700,11 @@ function setColor(select) {
         "rgb(0, 225, 255)"
       );
       $root.documentElement.style.setProperty(
-        "--btnBgHoverBgColor",
+        "--btnBgHoverColor",
         "rgba(0, 225, 255, 0.425)"
       );
       $root.documentElement.style.setProperty(
-        "--btnBgHoverColor",
+        "--btnHoverColor",
         "rgb(206, 241, 241)"
       );
       $root.documentElement.style.setProperty("--infoColor", "rgb(0, 0, 70)");
@@ -5724,13 +5750,16 @@ function createAlert(btnName, index) {
   });
   alertContent.innerHTML += "</ul>";
 }
-
+function showTableBody() {
+  const tBody = document.querySelectorAll("#table-body tr");
+  console.log(Array.from(tBody).length);
+}
 //////////////////  START ////////////////////
 // console.log(Object.keys(rowData));
 const menuBtnNames = Object.keys(rowData);
 const $body = document.body;
 const $root = document;
-let searcher = null;
+// let searcher = null;
 //header
 const header = document.createElement("header");
 header.innerHTML = `<div>Wpisz '<strong>YODA</strong>' albo '<strong>VADER</strong>' by skorzystać z tajnej mocy!!!</div>`;
@@ -5799,10 +5828,22 @@ menuBtnNames.forEach((btnName, index) => {
     btn.setAttribute("class", `menuBtns active`);
     //logika tworzenia alert contentu po przycisku
     createTable(btnName);
+    const tBody = document.querySelectorAll("#table-body tr");
+    const pages = document.getElementById("amount-item");
+
+    document.getElementById("all-pages").innerText = `${Math.ceil(
+      Array.from(tBody).length / pages.options[pages.selectedIndex].text
+    )}`;
+    console.log(pages);
+    pages.addEventListener("change", () => {
+      document.getElementById("all-pages").innerText = `${Math.ceil(
+        Array.from(tBody).length / pages.options[pages.selectedIndex].text
+      )}`;
+    });
   });
 });
 
-// //////
+// //////  Array.from(tBody).length /
 
 // document.getElementById("showAlertBtn").addEventListener("click", function () {
 //   document.getElementById("customAlert").style.display = "block";
@@ -5818,3 +5859,6 @@ menuBtnNames.forEach((btnName, index) => {
 //     document.getElementById("customAlert").style.display = "none";
 //   }
 // }
+document.getElementById("sprawdzaj").addEventListener("click", () => {
+  showTableBody();
+});

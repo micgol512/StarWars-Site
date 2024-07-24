@@ -5588,11 +5588,17 @@ function createTable(key) {
       document.getElementById(`row-${index}`).style.display = "none";
     }
   });
-
+  // const tBody = Array.from(document.querySelectorAll("#table-body tr"));
   const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
   delBtnTab.forEach((btn, index) => {
     btn.addEventListener("click", () => {
       document.getElementById(`row-${index}`).remove();
+      showTableBody();
+      /////////////////////////////
+      // document.getElementById("all-pages").innerText = `${Math.ceil(
+      //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
+      // )}`;
+      /////////////////////////////
     });
   });
   const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
@@ -5631,6 +5637,11 @@ function createTable(key) {
           /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
           document.getElementById(`row-${index}`).remove();
           btnDelChecked.remove();
+          /////////////////////////////
+          // document.getElementById("all-pages").innerText = `${Math.ceil(
+          //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
+          // )}`;
+          /////////////////////////////
         });
       }
     });
@@ -5639,9 +5650,9 @@ function createTable(key) {
   pagesWrapper.setAttribute("id", "wrapper-page-changer");
   pagesWrapper.innerHTML = `
   <button class="btn-pages" disabled>❰</button>
-    <input id="curr-page" placeholder="1" />
+    <input id="curr-page" value="1"/>
     <button class="btn-pages">❱</button>
-    <span>z </span><span id="all-pages">2</span>
+    <span>z </span><span id="all-pages">01</span>
     <select id="amount-item" name="pages">
         <option value="10">10</option>
         <option value="20">20</option>
@@ -5650,8 +5661,46 @@ function createTable(key) {
   // ❰❱𒌍𒌋⫷⫸ ↪︎ ↩︎
   searcher.append(pagesWrapper);
   // contenter.append(pagesWrapper);
+  showTableBody();
+  const btnChange = document.querySelectorAll(".btn-pages");
+  const allPages = document.getElementById("all-pages");
+  const currPage = document.getElementById("curr-page");
+  if (allPages.innerText === "1") btnChange[1].setAttribute("disabled", "");
+  btnChange.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      switch (index) {
+        case 0:
+          if (--currPage.value > 1) {
+            btnChange[1].removeAttribute("disabled");
+          } else {
+            btn.setAttribute("disabled", "");
+          }
+          break;
+        case 1:
+          if (++currPage.value < allPages.innerText) {
+            btnChange[0].removeAttribute("disabled");
+          } else {
+            btn.setAttribute("disabled", "");
+          }
+          break;
+        default:
+          alert("Coś jest źle!!");
+          break;
+      }
+    });
+  });
+  currPage.addEventListener("input", () => {
+    console.log(currPage.value);
+    ////
+    ////sprawdzić czy wproiwadzona wartość to liczba i potem czy nie przekracza zakresu allpages
+    ////
+    ////
+    ////
+    ////
+    ////
+    ////
+  });
 }
-
 function createActions(parent) {
   const editBtn = document.createElement("button");
   editBtn.textContent = "Pokaż";
@@ -5751,9 +5800,37 @@ function createAlert(btnName, index) {
   alertContent.innerHTML += "</ul>";
 }
 function showTableBody() {
-  const tBody = document.querySelectorAll("#table-body tr");
-  console.log(Array.from(tBody).length);
+  //console.log(typeof document.getElementById("curr-page"));
+  // console.clear();
+  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+
+  const accPage = document.getElementById("curr-page").value;
+  let pages = document.getElementById("amount-item");
+  document.getElementById("all-pages").innerText = `${Math.ceil(
+    Array.from(tBody).length / pages.options[pages.selectedIndex].text
+  )}`;
+  pages =
+    pages.options[pages.selectedIndex].text !== null
+      ? pages.options[pages.selectedIndex].text
+      : 10;
+  // const
+  // console.log(accPage - 1);
+  tBody.forEach((elemenet, index) => {
+    // console.log(
+    //   `Indeks ${index}: value: ${Math.floor(index / pages) === accPage - 1}`
+    // );
+    if (Math.floor(index / pages) === accPage - 1) {
+      elemenet.removeAttribute("style");
+    } else elemenet.style.display = "none";
+  });
 }
+function test() {
+  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+  tBody[11].removeAttribute("style");
+  tBody[10].style.display = "";
+  console.log(tBody[10]);
+}
+
 //////////////////  START ////////////////////
 // console.log(Object.keys(rowData));
 const menuBtnNames = Object.keys(rowData);
@@ -5828,17 +5905,12 @@ menuBtnNames.forEach((btnName, index) => {
     btn.setAttribute("class", `menuBtns active`);
     //logika tworzenia alert contentu po przycisku
     createTable(btnName);
-    const tBody = document.querySelectorAll("#table-body tr");
-    const pages = document.getElementById("amount-item");
 
-    document.getElementById("all-pages").innerText = `${Math.ceil(
-      Array.from(tBody).length / pages.options[pages.selectedIndex].text
-    )}`;
-    console.log(pages);
+    const pages = document.getElementById("amount-item");
+    showTableBody();
     pages.addEventListener("change", () => {
-      document.getElementById("all-pages").innerText = `${Math.ceil(
-        Array.from(tBody).length / pages.options[pages.selectedIndex].text
-      )}`;
+      // console.log(pages.options[pages.selectedIndex].text);
+      showTableBody();
     });
   });
 });
@@ -5861,4 +5933,5 @@ menuBtnNames.forEach((btnName, index) => {
 // }
 document.getElementById("sprawdzaj").addEventListener("click", () => {
   showTableBody();
+  // test();
 });

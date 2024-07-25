@@ -5498,10 +5498,11 @@ const rowData = {
   ],
 };
 function formatDate(date) {
+  date = new Date(date);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Miesiące są indeksowane od 0
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  return `${day}-${month}-${year}`;
 }
 function createTable(key) {
   if (document.getElementById("wrapper-content")) {
@@ -5580,7 +5581,7 @@ function createTable(key) {
         <td>${element[head1]}</td>
         <td>${element[head2]}</td>
         <td>${element[head3]}</td>
-        <td>${formatDate(new Date(element.created))}</td>  
+        <td>${formatDate(element.created)}</td>  
       </tr>`;
     //<td id="action-buttons${index}" class="content-buttons"></td>
     createActions(document.getElementById(`row-${index}`));
@@ -5604,7 +5605,7 @@ function createTable(key) {
   const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
   showBtnTab.forEach((btn, index) => {
     btn.addEventListener("click", () => {
-      console.log(key);
+      // console.log(key);
       createAlert(key, index);
       document
         .getElementById("closeAlertBtn")
@@ -5650,7 +5651,7 @@ function createTable(key) {
   pagesWrapper.setAttribute("id", "wrapper-page-changer");
   pagesWrapper.innerHTML = `
   <button class="btn-pages" disabled>❰</button>
-    <input id="curr-page" value="1"/>
+    <input id="curr-page" placeholder = "1" value="1"/>
     <button class="btn-pages">❱</button>
     <span>z </span><span id="all-pages">01</span>
     <select id="amount-item" name="pages">
@@ -5690,7 +5691,7 @@ function createTable(key) {
     });
   });
   currPage.addEventListener("input", () => {
-    console.log(currPage.value);
+    // console.log(currPage.value);
     ////
     ////sprawdzić czy wproiwadzona wartość to liczba i potem czy nie przekracza zakresu allpages
     ////
@@ -5703,10 +5704,10 @@ function createTable(key) {
 }
 function createActions(parent) {
   const editBtn = document.createElement("button");
-  editBtn.textContent = "Pokaż";
+  editBtn.textContent = "✙";
   editBtn.setAttribute("class", "showBtn");
   const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Usuń";
+  deleteBtn.innerHTML = `.`;
   deleteBtn.setAttribute("class", "deleteBtn");
   const checkBox = document.createElement("input");
   checkBox.setAttribute("class", "checkBoxSelect");
@@ -5782,7 +5783,7 @@ function createAlert(btnName, index) {
     <div class="alert-title"><span><strong> ${
       infoRow.name || infoRow.title
     }</strong></span>
-    <span class="closeBtn" id="closeAlertBtn">&times;</span>
+    <span class="closeBtn" id="closeAlertBtn">𒉽</span>
   </div>
   <div id="alert-content">
   </div></div>`;
@@ -5793,7 +5794,9 @@ function createAlert(btnName, index) {
   Object.entries(infoRow).forEach(([key, value]) => {
     if (typeof value === "object") {
       value = [...value].join(", ");
-      console.log(value);
+    }
+    if (key === "created" || key === "edited") {
+      value = formatDate(value);
     }
     alertContent.innerHTML += `<li><strong>${key.toUpperCase()}:</strong>  ${value}</li>`;
   });
@@ -5803,7 +5806,6 @@ function showTableBody() {
   //console.log(typeof document.getElementById("curr-page"));
   // console.clear();
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-
   const accPage = document.getElementById("curr-page").value;
   let pages = document.getElementById("amount-item");
   document.getElementById("all-pages").innerText = `${Math.ceil(
@@ -5815,6 +5817,22 @@ function showTableBody() {
       : 10;
   // const
   // console.log(accPage - 1);
+  if (tBody.length !== 0) {
+    tBody.forEach((elemenet, index) => {
+      // console.log(
+      //   `Indeks ${index}: value: ${Math.floor(index / pages) === accPage - 1}`
+      // );
+      if (Math.floor(index / pages) === accPage - 1) {
+        elemenet.removeAttribute("style");
+      } else elemenet.style.display = "none";
+    });
+  } else {
+    const nothingToShow = document.getElementById("table-body");
+    nothingToShow.innerHTML += `<td>
+    <tr>"Brak elelemntów do wyświetlenia"</tr>
+    </td>`;
+  }
+
   tBody.forEach((elemenet, index) => {
     // console.log(
     //   `Indeks ${index}: value: ${Math.floor(index / pages) === accPage - 1}`
@@ -5828,7 +5846,7 @@ function test() {
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
   tBody[11].removeAttribute("style");
   tBody[10].style.display = "";
-  console.log(tBody[10]);
+  // console.log(tBody[10]);
 }
 
 //////////////////  START ////////////////////
@@ -5900,7 +5918,7 @@ menuBtnNames.forEach((btnName, index) => {
     logo.remove();
     for (let i = 0; i < menuBtnNames.length; i++) {
       document.getElementById(`menuBtn-${i}`).setAttribute("class", `menuBtns`);
-      console.log();
+      // console.log();
     }
     btn.setAttribute("class", `menuBtns active`);
     //logika tworzenia alert contentu po przycisku

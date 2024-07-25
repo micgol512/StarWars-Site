@@ -159,6 +159,21 @@ header {
 .content-buttons button {
   width: 100%;
 }
+.showBtn,
+.deleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.3rem;
+}
+.deleteBtn {
+  background-image: url("./media/helpfull/trash.gif");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 
 /* message Box */
 .alert {
@@ -179,11 +194,11 @@ header {
   height: 70%;
   position: relative;
   flex-flow: column nowrap;
-  gap: 10px;
+  /* gap: 10px; */
   margin: 10% auto;
   /* border: 1px solid var(--mainColor); */
   border-radius: 0 0 0.5rem 0.5rem;
-  width: min(75%, 1920px);
+  width: min(75%, 1000px);
   height: 70%;
 }
 .alert-title {
@@ -191,9 +206,9 @@ header {
   top: 0;
   position: absolute; */
   background-color: var(--mainColor);
-  width: 100%;
-  border: 1px solid var(--mainColor);
-  border-bottom: 1px solid var(--infoColor);
+  width: 100%-1px;
+  /* border: 1px solid var(--mainColor); */
+  /* border-bottom: 1px solid var(--infoColor); */
   border-radius: 0.5rem 0.5rem 0 0;
   /* margin-bottom: 1rem;
   margin-top: -3rem; */
@@ -209,8 +224,8 @@ header {
   background-color: rgb(245, 245, 245);
   padding: 0.5rem 0.5rem;
   border: 1px solid var(--mainColor);
+  border-top: 1px solid var(--infoColor);
   border-radius: 0 0 0.5rem 0.5rem;
-
   height: auto;
   max-height: 60%;
   /* max-width: 1920px; */
@@ -233,7 +248,7 @@ header {
   right: 0.25rem;
   color: var(--mainBgColor);
   float: right;
-  font-size: 28px;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 .closeBtn:hover,

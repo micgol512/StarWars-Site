@@ -5507,20 +5507,20 @@ function formatDate(date) {
 function createTable(key) {
   if (document.getElementById("wrapper-content")) {
     document.getElementById("wrapper-content").remove();
-    document.getElementById("wrapper-serch").remove();
+    document.getElementById("wrapper-search").remove();
   }
   const searcher = document.createElement("div");
   const contenter = document.createElement("div");
-  searcher.setAttribute("id", "wrapper-serch");
+  searcher.setAttribute("id", "wrapper-search");
   searcher.setAttribute("class", "wrapper content");
   searcher.innerHTML = `
   <div class="wrapper-searcher">
   <label for="input-search-index">Search by index</label>
-  <input id="input-search-index" class="sercher-by"/>
+  <input id="input-search-index" class="searcher-by"/>
   </div>
   <div class="wrapper-searcher">
   <label for="input-search-text">Search by text</label>
-  <input id="input-search-text" class="sercher-by" />
+  <input id="input-search-text" class="searcher-by" />
   </div>`;
   contenter.setAttribute("id", "wrapper-content");
   contenter.setAttribute("class", "wrapper content");
@@ -5621,9 +5621,9 @@ function createTable(key) {
       const isChecked = checkBoxTab.some((item) => item.checked);
       if (!document.getElementById("btnDelChecked")) {
         btnDelChecked = document.createElement("button");
-        btnDelChecked.textContent = "Usuń zaznaczone";
+        btnDelChecked.textContent = "Remove all";
         btnDelChecked.setAttribute("id", "btnDelChecked");
-        document.getElementById("wrapper-serch").append(btnDelChecked);
+        document.getElementById("wrapper-search").append(btnDelChecked);
       }
       if (!isChecked) {
         btnDelChecked.remove();
@@ -5638,11 +5638,7 @@ function createTable(key) {
           /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
           document.getElementById(`row-${index}`).remove();
           btnDelChecked.remove();
-          /////////////////////////////
-          // document.getElementById("all-pages").innerText = `${Math.ceil(
-          //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
-          // )}`;
-          /////////////////////////////
+          showTableBody();
         });
       }
     });
@@ -5691,6 +5687,9 @@ function createTable(key) {
     });
   });
   currPage.addEventListener("input", () => {
+    if (currPage.value !== 0 && currPage.value > 0) {
+      showTableBody();
+    }
     // console.log(currPage.value);
     ////
     ////sprawdzić czy wproiwadzona wartość to liczba i potem czy nie przekracza zakresu allpages
@@ -5701,13 +5700,28 @@ function createTable(key) {
     ////
     ////
   });
+  const searchById = document.getElementById("input-search-index");
+  searchById.setAttribute("placeholder", `1-${rowData[key].length}`);
+  searchById.addEventListener("input", () => {
+    const tempId = parseInt(searchById.value);
+    if (
+      typeof tempId !== "NaN" &&
+      tempId > 0 &&
+      tempId <= rowData[key].length
+    ) {
+      console.log(tempId);
+    } else {
+      searchById.value = "";
+      console.log("złe dane");
+    }
+  });
 }
 function createActions(parent) {
   const editBtn = document.createElement("button");
   editBtn.textContent = "✙";
   editBtn.setAttribute("class", "showBtn");
   const deleteBtn = document.createElement("button");
-  deleteBtn.innerHTML = `.`;
+  // deleteBtn.innerHTML = ``;
   deleteBtn.setAttribute("class", "deleteBtn");
   const checkBox = document.createElement("input");
   checkBox.setAttribute("class", "checkBoxSelect");
@@ -5788,21 +5802,47 @@ function createAlert(btnName, index) {
   <div id="alert-content">
   </div></div>`;
   $body.append(alert);
-
   const alertContent = document.getElementById("alert-content");
   alertContent.innerHTML += "<ul>";
-  Object.entries(infoRow).forEach(([key, value]) => {
-    if (typeof value === "object") {
-      value = [...value].join(", ");
-    }
-    if (key === "created" || key === "edited") {
-      value = formatDate(value);
-    }
-    alertContent.innerHTML += `<li><strong>${key.toUpperCase()}:</strong>  ${value}</li>`;
-  });
-  alertContent.innerHTML += "</ul>";
+  if (btnName === "people") {
+    console.log(infoRow);
+    alertContent.innerHTML += `
+    <li><strong>NAME</strong> ${infoRow.name}</li>
+    <li><strong>HEIGHT:</strong> ${infoRow.height}</li>
+    <li><strong>BIRTH_YEAR:</strong> ${infoRow.birth_year}</li>
+    <li><strong>GENDER:</strong> ${infoRow.gender}</li>
+    <li><strong>EYE_COLOR:</strong> ${infoRow.eye_color}</li>
+    <li><strong>HAIR_COLOR:</strong> ${infoRow.hair_color}</li>
+    <li><strong>SKIN_COLOR:</strong> ${infoRow.skin_color}</li>
+    <li><strong>HOMEWORLD:</strong> ${infoRow.homeworld}</li>
+    <li><strong>SPECIES:</strong> ${infoRow.species}</li>
+    <li><strong>VEHICLES:</strong> ${[...infoRow.vehicles].join(", ")}</li>
+    <li><strong>STARSHIPS:</strong> ${[...infoRow.starships].join(", ")}</li>
+    <li><strong>FILMS:</strong> ${[...infoRow.films].join(", ")}</li>
+    <li><strong>CREATED:</strong> ${formatDate(infoRow.created)}</li>
+    <li><strong>EDITED:</strong> ${formatDate(infoRow.edited)}</li>
+    <li><strong>URL:</strong> ${infoRow.url}</li>`;
+  } else {
+    Object.entries(infoRow).forEach(([key, value]) => {
+      if (typeof value === "object") {
+        value = [...value].join(", ");
+      }
+      if (key === "created" || key === "edited") {
+        value = formatDate(value);
+      }
+      alertContent.innerHTML += `<li><strong>${key.toUpperCase()}:</strong>  ${value}</li>`;
+    });
+    alertContent.innerHTML += "</ul>";
+  }
 }
-function showTableBody() {
+function showTableBody(search = null) {
+  //<<obsługa search by ID/Name
+  //
+  //
+  //
+  //
+  //
+
   //console.log(typeof document.getElementById("curr-page"));
   // console.clear();
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
@@ -5842,6 +5882,7 @@ function showTableBody() {
     } else elemenet.style.display = "none";
   });
 }
+
 function test() {
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
   tBody[11].removeAttribute("style");
@@ -5923,9 +5964,9 @@ menuBtnNames.forEach((btnName, index) => {
     btn.setAttribute("class", `menuBtns active`);
     //logika tworzenia alert contentu po przycisku
     createTable(btnName);
-
-    const pages = document.getElementById("amount-item");
     showTableBody();
+    const pages = document.getElementById("amount-item");
+
     pages.addEventListener("change", () => {
       // console.log(pages.options[pages.selectedIndex].text);
       showTableBody();

@@ -97,7 +97,7 @@ function createTable(key) {
   delBtnTab.forEach((btn, index) => {
     btn.addEventListener("click", () => {
       document.getElementById(`row-${index}`).remove();
-      showTableBody();
+      // showTableBody();
       /////////////////////////////
       // document.getElementById("all-pages").innerText = `${Math.ceil(
       //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
@@ -122,7 +122,6 @@ function createTable(key) {
   checkBoxTab.forEach((check, index) => {
     check.addEventListener("change", () => {
       checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-      console.log(checkBoxTab);
       let isChecked = checkBoxTab.some((item) => item.checked);
       if (!document.getElementById("btnDelChecked")) {
         btnDelChecked = document.createElement("button");
@@ -143,7 +142,7 @@ function createTable(key) {
           /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
           document.getElementById(`row-${index}`).remove();
           btnDelChecked.remove();
-          showTableBody();
+          // showTableBody();
         });
       }
     });
@@ -152,7 +151,7 @@ function createTable(key) {
   pagesWrapper.setAttribute("id", "wrapper-page-changer");
   pagesWrapper.innerHTML = `
   <button class="btn-pages" disabled>❰</button>
-    <input id="curr-page" placeholder = "1" value="1"/>
+    <input type="number" id="curr-page" placeholder = "1" value="1"/>
     <button class="btn-pages">❱</button>
     <span>z </span><span id="all-pages">01</span>
     <select id="amount-item" name="pages">
@@ -163,47 +162,48 @@ function createTable(key) {
   // ❰❱𒌍𒌋⫷⫸ ↪︎ ↩︎
   searcher.append(pagesWrapper);
   // contenter.append(pagesWrapper);
-  showTableBody();
+  // showTableBody();
   const btnChange = document.querySelectorAll(".btn-pages");
   const allPages = document.getElementById("all-pages");
   const currPage = document.getElementById("curr-page");
   const pages = document.getElementById("amount-item");
   const searchById = document.getElementById("input-search-index");
-  const searchByText = document.getElementById("input-search-text");
+  const searchByTxt = document.getElementById("input-search-text");
   if (allPages.innerText === "1") btnChange[1].setAttribute("disabled", "");
   btnChange.forEach((btn, index) => {
     btn.addEventListener("click", () => {
       switch (index) {
         case 0:
-          if (--currPage.value > 1) {
-            btnChange[1].removeAttribute("disabled");
-          } else {
-            btn.setAttribute("disabled", "");
-          }
+          currPage.value--;
+          // checkButtonPages();
           break;
         case 1:
-          if (++currPage.value < allPages.innerText) {
-            btnChange[0].removeAttribute("disabled");
-          } else {
-            btn.setAttribute("disabled", "");
-          }
+          currPage.value++;
+          // checkButtonPages();
           break;
         default:
           alert("Coś jest źle!!");
           break;
       }
-      showTableBody();
+      // showTableBody();
+      checkButtonPages();
     });
   });
+
   currPage.addEventListener("input", () => {
     searchById.value = "";
-    searchByText.value = "";
-    if (currPage.value > 0 && currPage.value <= parseInt(allPages.innerText)) {
-      showTableBody();
+    searchByTxt.value = "";
+    if (
+      parseInt(currPage.value) > 0 &&
+      parseInt(currPage.value) <= parseInt(allPages.innerText)
+    ) {
+      // showTableBody();
+      checkButtonPages();
       // console.log(allPages.innerText);
     } else {
       currPage.value = "";
       console.log("złe dane");
+      checkButtonPages();
     }
 
     // console.log(currPage.value);
@@ -214,14 +214,20 @@ function createTable(key) {
     ////
     ////
     ////
-    ////
+    //// 19799773
   });
   pages.addEventListener("change", () => {
     // console.log(pages.options[pages.selectedIndex].text);
     //USTAWIĆ ODPOWIENDNIO currPage
     //currPage.value=
-    searchById.value = "";
-    searchByText.value = "";
+    // searchById.value = "";
+    // searchByText.value = "";
+    // const tempPages = parseInt(document.getElementById("all-pages").innerText);
+    // currPage.value = Math.floor(
+    //   (parseInt(document.getElementById("all-pages").innerText) *
+    //     parseInt(currPage.value)) /
+    //     tempPages
+    // );
     showTableBody();
   });
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
@@ -232,25 +238,27 @@ function createTable(key) {
     if (searchById.value > 0 && searchById.value <= rowData[key].length) {
       // console.log("TempID:", tempId);
       //////////////////////////
-      showTableBody(parseInt(searchById.value));
+      // showTableBody(parseInt(searchById.value));
       ///////////////////////////
     } else {
-      showTableBody();
+      // showTableBody();
       searchById.value = "";
       console.log("złe dane");
     }
+    checkButtonPages();
   });
   let tempText = "nazwie";
   if (key === "films") tempText = "tytule";
-  searchByText.setAttribute("placeholder", `Wyszukaj po ${tempText}`);
-  searchByText.addEventListener("input", () => {
+  searchByTxt.setAttribute("placeholder", `Wyszukaj po ${tempText}`);
+  searchByTxt.addEventListener("input", () => {
     //////////////////////////
     currPage.value = 1;
     searchById.value = "";
-    console.log(searchByText.value);
-    if (searchByText.value === "") showTableBody();
-    else showTableBody(searchByText.value);
-    // console.log("PAGES VALUE", );
+    searchByText(searchByTxt.value);
+    // console.log(searchByText.value);
+    // if (searchByText.value === "") showTableBody();
+    // else showTableBody(searchByText.value);
+    // console.log("PAGES VALUE");
   });
 }
 function createActions(parent) {
@@ -375,24 +383,125 @@ function createInfo(btnName, index) {
 function showTableBody(searchBy = null) {
   if (document.getElementById("nothing-to-show"))
     document.getElementById("nothing-to-show").remove();
-
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  const accPage = document.getElementById("curr-page").value;
-  let pages = document.getElementById("amount-item");
-  pages =
-    pages.options[pages.selectedIndex].text !== null
-      ? pages.options[pages.selectedIndex].text
-      : 10;
+  const currPage = document.getElementById("curr-page");
+  // let pages = document.getElementById("amount-item");
+  // pages =
+  //   pages.options[pages.selectedIndex].text !== null
+  //     ? pages.options[pages.selectedIndex].text
+  //     : 10;
+  const pages = parseInt(document.getElementById("amount-item").value);
   document.getElementById("all-pages").innerText = `${Math.ceil(
     tBody.length / pages
   )}`;
-  document
-    .getElementById("input-search-index")
-    .setAttribute("placeholder", `1-${tBody.length}`);
+  // currPage.value=
+  const searchById = document.getElementById("input-search-index");
+  const searchByText = document.getElementById("input-search-text");
+  searchById.setAttribute("placeholder", `1-${tBody.length}`);
+  if (tBody.length !== 0) {
+    tBody.forEach((element, index) => {
+      if (Math.floor(index / pages) === currPage.value - 1) {
+        element.removeAttribute("style");
+      } else {
+        element.style.display = "none";
+      }
+    });
+    if (searchById.value !== "") {
+      searchByText(searchById.value);
+    }
+    // if (searchByText !== "") {
+    //   let counter = currPage.value * pages - pages;
+    //   console.log(counter);
+    //   tBody.forEach((element, index) => {
+    //     const texts = element.querySelectorAll("td")[1].innerText.toLowerCase();
+    //     if (
+    //       texts.includes(searchByText.value.toLowerCase()) &&
+    //       counter++ < 10
+    //     ) {
+    //       element.removeAttribute("style");
+    //     } else {
+    //       element.style.display = "none";
+    //     }
+    //   });
+    // }
+
+    // tBody.forEach((element, index) => {
+    //   if (searchBy === null) {
+    //     if (Math.floor(index / pages) === currPage - 1) {
+    //       element.removeAttribute("style");
+    //     } else {
+    //       element.style.display = "none";
+    //     }
+    //   } else {
+    //     if (typeof searchBy === "number") {
+    //       // const id = Array.from(
+    //       //   document.querySelectorAll("#table-body>tr td:nth-child(1)")
+    //       // );
+    //       // console.log(id);
+    //       if (index === searchBy - 1) {
+    //         // console.log("INDEX równy SearchBy. A elemetn to: ", element);
+    //         element.removeAttribute("style");
+    //       } else {
+    //         element.style.display = "none";
+    //       }
+    //     } else if (typeof searchBy === "string") {
+    //       const texts = element
+    //         .querySelectorAll("td")[1]
+    //         .innerText.toLowerCase();
+    //       console.log(texts);
+    //       if (texts.includes(searchBy.toLowerCase())) {
+    //         element.removeAttribute("style");
+    //       } else {
+    //         element.style.display = "none";
+    //       }
+    //       // console.log(pages);
+    //       // document.getElementById("all-pages").innerText = `${Math.ceil(
+    //       //   Array.from(tBody).filter((row) => row.style.display !== "none")
+    //       //     .length / pages
+    //       // )}`;
+    //     }
+    //   }
+    // });
+  }
+  if (
+    tBody.length === 0 ||
+    tBody.length === tBody.filter((row) => row.style.display === "none").length
+  ) {
+    const nothingToShow = document.createElement("tr");
+    nothingToShow.setAttribute("id", "nothing-to-show");
+    nothingToShow.innerHTML += `<td>"Brak elelemntów do wyświetlenia"</td>`;
+    document.getElementById("table-body").append(nothingToShow);
+  }
+}
+
+function showContent() {
+  if (document.getElementById("nothing-to-show"))
+    document.getElementById("nothing-to-show").remove();
+
+  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+  const currPage = document.getElementById("curr-page").value;
+  const searchByID = document.getElementById("input-search-index");
+  const searchByText = document.getElementById("input-search-text");
+  let searchBy;
+  const pages = parseInt(document.getElementById("amount-item").value);
+  document.getElementById("all-pages").innerText = `${Math.ceil(
+    tBody.length / pages
+  )}`;
+  document.getElementById("all-pages").innerText = `${Math.ceil(
+    tBody.length / pages
+  )}`;
+  searchByID.setAttribute("placeholder", `1-${tBody.length}`);
+  if (searchByID.value !== "") {
+    searchBy = searchByID.value;
+  } else if (searchByText.value !== "") {
+    searchBy = searchByText.value;
+  } else {
+    searchBy = null;
+  }
   if (tBody.length !== 0) {
     tBody.forEach((element, index) => {
       if (searchBy === null) {
-        if (Math.floor(index / pages) === accPage - 1) {
+        if (Math.floor(index / pages) === currPage - 1) {
           element.removeAttribute("style");
         } else {
           element.style.display = "none";
@@ -423,6 +532,9 @@ function showTableBody(searchBy = null) {
             element.style.display = "none";
           }
           // console.log(pages)
+          let tempPages = parseInt(
+            document.getElementById("all-pages").innerText
+          );
           document.getElementById("all-pages").innerText = `${Math.ceil(
             Array.from(tBody).filter((row) => row.style.display !== "none")
               .length / pages
@@ -441,7 +553,64 @@ function showTableBody(searchBy = null) {
     document.getElementById("table-body").append(nothingToShow);
   }
 }
+function checkButtonPages() {
+  const btnChange = document.querySelectorAll(".btn-pages");
+  const allPages = document.getElementById("all-pages");
+  const currPage = document.getElementById("curr-page");
+  // const pages = document.getElementById("amount-item");
+  if (allPages.innerText === "1") {
+    // console.log(`ALL PAGES: ${allPages.innerText} = 1`);
+    btnChange[0].setAttribute("disabled", "");
+    btnChange[1].setAttribute("disabled", "");
+  } else {
+    if (currPage.value !== "") {
+      btnChange[0].removeAttribute("disabled");
+      btnChange[1].removeAttribute("disabled");
+      if (parseInt(currPage.value) === 1) {
+        // console.log(`Pierwszy warunek: ${currPage.value} > 1`);
+        btnChange[0].setAttribute("disabled", "");
+      } else {
+        // console.log("Else pierwszye");
+        btnChange[0].removeAttribute("disabled");
+      }
+      if (parseInt(currPage.value) === parseInt(allPages.innerText)) {
+        // console.log(
+        //   `Drugi warunek: ${currPage.value} <= ${allPages.innerText}`
+        // );
+        btnChange[1].setAttribute("disabled", "");
+      } else {
+        // console.log("Else drugi");
+        btnChange[1].removeAttribute("disabled");
+      }
+    } else {
+      btnChange[0].setAttribute("disabled", "");
+      btnChange[1].setAttribute("disabled", "");
+    }
+  }
+}
+function changeCurrPage() {
+  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+  const tBodyDisabled = tBody.filter((row) => row.style.display !== "none");
+  const currPage = document.getElementById("curr-page");
+  console.log("Disabled", tBodyDisabled);
+}
 function searchByID() {}
+function searchByText(text = "") {
+  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+  const tBodyFiltered = tBody.filter((element) =>
+    element
+      .querySelectorAll("td")[1]
+      .innerText.toLowerCase()
+      .includes(text.toLowerCase())
+  );
+
+  const tableBody = document.getElementById("table-body");
+  tableBody.innerHTML = "";
+  tBodyFiltered.forEach((element) => {
+    tableBody.append(element);
+  });
+  console.log("przefiltrowana ", tBodyFiltered);
+}
 function test() {
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
   tBody[11].removeAttribute("style");
@@ -523,7 +692,7 @@ menuBtnNames.forEach((btnName, index) => {
     btn.setAttribute("class", `menuBtns active`);
     //logika tworzenia info contentu po przycisku
     createTable(btnName);
-    showTableBody();
+    // showTableBody();
   });
 });
 
@@ -544,6 +713,9 @@ menuBtnNames.forEach((btnName, index) => {
 //   }
 // }
 document.getElementById("sprawdzaj").addEventListener("click", () => {
+  // searchByText("Luke");
+  changeCurrPage();
+  checkButtonPages();
   showTableBody();
   // test();
 });

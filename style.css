@@ -423,7 +423,7 @@ li::before {
   border: 1px solid black;
 }
 #curr-page {
-  width: 1.5rem;
+  width: 2.5rem;
   height: 1.5rem;
   border-radius: 0.3rem;
   border: 1px solid;

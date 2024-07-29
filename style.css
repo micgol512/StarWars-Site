@@ -150,6 +150,10 @@ header {
 #table-body td:nth-child(5) {
   text-wrap: nowrap;
 }
+#table-body tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+}
 .content-buttons {
   display: flex;
   flex-flow: column nowrap;
@@ -332,15 +336,17 @@ li::before {
   height: 2rem;
   border-radius: 1rem;
   cursor: pointer;
-  box-shadow: hsla(0, 0%, 100%, 0.15) 0 1px 1px,
-    inset hsla(0, 0%, 0%, 0.5) 0 0 0 1px;
-  background-color: hsla(0, 0%, 0%, 0.2);
+  box-shadow: rgba(255, 255, 255, 0.15) 0 1px 1px,
+    inset rgba(0, 0, 0, 0.5) 0 0 0 1px;
+  background-color: rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   transition: background-position 0.15s cubic-bezier(0.8, 0, 1, 1),
     transform 0.25s cubic-bezier(0.8, 0, 1, 1);
   outline: none;
 }
-
+.radioSite:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
 .radioSite:checked {
   transition: background-position 0.2s 0.15s cubic-bezier(0, 0, 0.2, 1),
     transform 0.25s cubic-bezier(0, 0, 0.2, 1);

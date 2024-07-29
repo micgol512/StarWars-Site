@@ -34,119 +34,119 @@ function createTable(key) {
       </thead><tbody id="table-body"></tbody>`;
   contenter.append(tableContent);
 
-  const rowKeys = Object.keys(rowData[key][0]);
-  const $thead = document.getElementById("table-head");
-  let head1 = "name";
-  let head2, head3;
-  switch (key.toLowerCase()) {
-    case "vehicles":
-      head2 = rowKeys[1];
-      head3 = rowKeys[2];
-      break;
-    case "starships":
-      head2 = rowKeys[1];
-      head3 = rowKeys[2];
-      break;
-    case "species":
-      head2 = rowKeys[1];
-      head3 = rowKeys[2];
-      break;
-    case "planets":
-      head2 = rowKeys[1];
-      head3 = rowKeys[6];
-      break;
-    case "people":
-      head2 = rowKeys[1];
-      head3 = rowKeys[7];
-      break;
-    case "films":
-      head1 = rowKeys[0];
-      head2 = rowKeys[2];
-      head3 = rowKeys[4];
-      break;
-    default:
-      break;
-  }
-  $thead.innerHTML = `<tr>
-        <th>ID</th>
-        <th>${head1.toUpperCase()}</th>
-        <th>${head2.toUpperCase()}</th>
-        <th>${head3.toUpperCase()}</th>
-        <th>CREATED</th>
-        <th>ACTIONS</th>
-      </tr>`;
-
-  const content = rowData[key];
-  content.forEach((element, index) => {
-    const $tbody = document.getElementById("table-body");
-    $tbody.innerHTML += `<tr id="row-${index}">
-        <td>${index + 1}.</td>
-        <td>${element[head1]}</td>
-        <td>${element[head2]}</td>
-        <td>${element[head3]}</td>
-        <td>${formatDate(element.created)}</td>  
-      </tr>`;
-    //<td id="action-buttons${index}" class="content-buttons"></td>
-    createActions(document.getElementById(`row-${index}`));
-    if (index > 9) {
-      document.getElementById(`row-${index}`).style.display = "none";
-    }
-  });
+  // const rowKeys = Object.keys(rowData[key][0]);
+  // const $thead = document.getElementById("table-head");
+  // let head1 = "name";
+  // let head2, head3;
+  // switch (key.toLowerCase()) {
+  //   case "vehicles":
+  //     head2 = rowKeys[1];
+  //     head3 = rowKeys[2];
+  //     break;
+  //   case "starships":
+  //     head2 = rowKeys[1];
+  //     head3 = rowKeys[2];
+  //     break;
+  //   case "species":
+  //     head2 = rowKeys[1];
+  //     head3 = rowKeys[2];
+  //     break;
+  //   case "planets":
+  //     head2 = rowKeys[1];
+  //     head3 = rowKeys[6];
+  //     break;
+  //   case "people":
+  //     head2 = rowKeys[1];
+  //     head3 = rowKeys[7];
+  //     break;
+  //   case "films":
+  //     head1 = rowKeys[0];
+  //     head2 = rowKeys[2];
+  //     head3 = rowKeys[4];
+  //     break;
+  //   default:
+  //     break;
+  // }
+  // $thead.innerHTML = `<tr>
+  //       <th>ID</th>
+  //       <th>${head1.toUpperCase()}</th>
+  //       <th>${head2.toUpperCase()}</th>
+  //       <th>${head3.toUpperCase()}</th>
+  //       <th>CREATED</th>
+  //       <th>ACTIONS</th>
+  //     </tr>`;
+  createData();
+  // const content = rowData[key];
+  // content.forEach((element, index) => {
+  //   const $tbody = document.getElementById("table-body");
+  //   $tbody.innerHTML += `<tr id="row-${index}">
+  //       <td>${index + 1}.</td>
+  //       <td>${element[head1]}</td>
+  //       <td>${element[head2]}</td>
+  //       <td>${element[head3]}</td>
+  //       <td>${formatDate(element.created)}</td>
+  //     </tr>`;
+  //   //<td id="action-buttons${index}" class="content-buttons"></td>
+  //   createActions(document.getElementById(`row-${index}`));
+  //   if (index > 9) {
+  //     document.getElementById(`row-${index}`).style.display = "none";
+  //   }
+  // });
   // const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
-  delBtnTab.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      document.getElementById(`row-${index}`).remove();
-      // showTableBody();
-      /////////////////////////////
-      // document.getElementById("all-pages").innerText = `${Math.ceil(
-      //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
-      // )}`;
-      /////////////////////////////
-    });
-  });
-  const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
-  showBtnTab.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      // console.log(key);
-      createInfo(key, index);
-      document
-        .getElementById("closeInfoBtn")
-        .addEventListener("click", function () {
-          document.getElementById("customAlert").remove();
-        });
-    });
-  });
-  let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-  let btnDelChecked = null;
-  checkBoxTab.forEach((check, index) => {
-    check.addEventListener("change", () => {
-      checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-      let isChecked = checkBoxTab.some((item) => item.checked);
-      if (!document.getElementById("btnDelChecked")) {
-        btnDelChecked = document.createElement("button");
-        btnDelChecked.textContent = "Remove all";
-        btnDelChecked.setAttribute("id", "btnDelChecked");
-        document.getElementById("wrapper-search").append(btnDelChecked);
-      }
-      if (!isChecked) {
-        btnDelChecked.remove();
-      } else {
-        // const indexToDel = [];
-        // checkBoxTab.forEach((item, index) => {
-        //   if (item.checked === true) {
-        //     indexToDel.push(index);
-        //   }
-        // });
-        btnDelChecked.addEventListener("click", () => {
-          /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
-          document.getElementById(`row-${index}`).remove();
-          btnDelChecked.remove();
-          // showTableBody();
-        });
-      }
-    });
-  });
+  // const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
+  // delBtnTab.forEach((btn, index) => {
+  //   btn.addEventListener("click", () => {
+  //     document.getElementById(`row-${index}`).remove();
+  //     // showTableBody();
+  //     /////////////////////////////
+  //     // document.getElementById("all-pages").innerText = `${Math.ceil(
+  //     //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
+  //     // )}`;
+  //     /////////////////////////////
+  //   });
+  // });
+  // const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
+  // showBtnTab.forEach((btn, index) => {
+  //   btn.addEventListener("click", () => {
+  //     // console.log(key);
+  //     createInfo(key, index);
+  //     document
+  //       .getElementById("closeInfoBtn")
+  //       .addEventListener("click", function () {
+  //         document.getElementById("customAlert").remove();
+  //       });
+  //   });
+  // });
+  // let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  // let btnDelChecked = null;
+  // checkBoxTab.forEach((check, index) => {
+  //   check.addEventListener("change", () => {
+  //     checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  //     let isChecked = checkBoxTab.some((item) => item.checked);
+  //     if (!document.getElementById("btnDelChecked")) {
+  //       btnDelChecked = document.createElement("button");
+  //       btnDelChecked.textContent = "Remove all";
+  //       btnDelChecked.setAttribute("id", "btnDelChecked");
+  //       document.getElementById("wrapper-search").append(btnDelChecked);
+  //     }
+  //     if (!isChecked) {
+  //       btnDelChecked.remove();
+  //     } else {
+  //       // const indexToDel = [];
+  //       // checkBoxTab.forEach((item, index) => {
+  //       //   if (item.checked === true) {
+  //       //     indexToDel.push(index);
+  //       //   }
+  //       // });
+  //       btnDelChecked.addEventListener("click", () => {
+  //         /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
+  //         document.getElementById(`row-${index}`).remove();
+  //         btnDelChecked.remove();
+  //         // showTableBody();
+  //       });
+  //     }
+  //   });
+  // });
   const pagesWrapper = document.createElement("div");
   pagesWrapper.setAttribute("id", "wrapper-page-changer");
   pagesWrapper.innerHTML = `
@@ -474,6 +474,129 @@ function showTableBody(searchBy = null) {
   }
 }
 
+function createData() {
+  const key = document.querySelector(".active").innerText.toLowerCase();
+  console.log(key);
+  if (document.getElementById("nothing-to-show"))
+    document.getElementById("nothing-to-show").remove();
+  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+  const currPage = document.getElementById("curr-page");
+  console.log(rowData[key][0]);
+  const rowKeys = Object.keys(rowData[key][0]);
+
+  const $thead = document.getElementById("table-head");
+  console.log("THEAD", $thead);
+  const content = rowData[key];
+  let head1 = "name";
+  let head2, head3;
+  switch (key.toLowerCase()) {
+    case "vehicles":
+      head2 = rowKeys[1];
+      head3 = rowKeys[2];
+      break;
+    case "starships":
+      head2 = rowKeys[1];
+      head3 = rowKeys[2];
+      break;
+    case "species":
+      head2 = rowKeys[1];
+      head3 = rowKeys[2];
+      break;
+    case "planets":
+      head2 = rowKeys[1];
+      head3 = rowKeys[6];
+      break;
+    case "people":
+      head2 = rowKeys[1];
+      head3 = rowKeys[7];
+      break;
+    case "films":
+      head1 = rowKeys[0];
+      head2 = rowKeys[2];
+      head3 = rowKeys[4];
+      break;
+    default:
+      break;
+  }
+  $thead.innerHTML = `<tr>
+    <th>ID</th>
+    <th>${head1.toUpperCase()}</th>
+    <th>${head2.toUpperCase()}</th>
+    <th>${head3.toUpperCase()}</th>
+    <th>CREATED</th>
+    <th>ACTIONS</th>
+  </tr>`;
+
+  content.forEach((element, index) => {
+    const $tbody = document.getElementById("table-body");
+    $tbody.innerHTML += `<tr id="row-${index}">
+        <td>${index + 1}.</td>
+        <td>${element[head1]}</td>
+        <td>${element[head2]}</td>
+        <td>${element[head3]}</td>
+        <td>${formatDate(element.created)}</td>  
+      </tr>`;
+    //<td id="action-buttons${index}" class="content-buttons"></td>
+    createActions(document.getElementById(`row-${index}`));
+    // if (index > 9) {
+    //   document.getElementById(`row-${index}`).style.display = "none";
+    // }
+  });
+  const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
+  delBtnTab.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      document.getElementById(`row-${index}`).remove();
+      // showTableBody();
+      /////////////////////////////
+      // document.getElementById("all-pages").innerText = `${Math.ceil(
+      //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
+      // )}`;
+      /////////////////////////////
+    });
+  });
+  const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
+  showBtnTab.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      // console.log(key);
+      createInfo(key, index);
+      document
+        .getElementById("closeInfoBtn")
+        .addEventListener("click", function () {
+          document.getElementById("customAlert").remove();
+        });
+    });
+  });
+  let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  let btnDelChecked = null;
+  checkBoxTab.forEach((check, index) => {
+    check.addEventListener("change", () => {
+      checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+      let isChecked = checkBoxTab.some((item) => item.checked);
+      if (!document.getElementById("btnDelChecked")) {
+        btnDelChecked = document.createElement("button");
+        btnDelChecked.textContent = "Remove all";
+        btnDelChecked.setAttribute("id", "btnDelChecked");
+        document.getElementById("wrapper-search").append(btnDelChecked);
+      }
+      if (!isChecked) {
+        btnDelChecked.remove();
+      } else {
+        // const indexToDel = [];
+        // checkBoxTab.forEach((item, index) => {
+        //   if (item.checked === true) {
+        //     indexToDel.push(index);
+        //   }
+        // });
+        btnDelChecked.addEventListener("click", () => {
+          /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
+          document.getElementById(`row-${index}`).remove();
+          btnDelChecked.remove();
+          // showTableBody();
+        });
+      }
+    });
+  });
+}
 function showContent() {
   if (document.getElementById("nothing-to-show"))
     document.getElementById("nothing-to-show").remove();
@@ -717,5 +840,8 @@ document.getElementById("sprawdzaj").addEventListener("click", () => {
   changeCurrPage();
   checkButtonPages();
   showTableBody();
+  const sprawdz = document.querySelector(".active").innerText;
+  console.log(sprawdz);
+  createData();
   // test();
 });

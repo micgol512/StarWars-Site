@@ -106,6 +106,7 @@ header {
 #wrapper-content {
   background-color: var(--mainBgColor);
 }
+
 .item {
   width: 100%;
   border: 1px solid var(--notBlack);
@@ -172,7 +173,7 @@ header {
   width: 2rem;
   height: 2rem;
   border-radius: 0.3rem;
-
+  cursor: pointer;
   /* padding: 0; */
 }
 .showBtn {
@@ -320,9 +321,7 @@ li::before {
   padding-left: 0.5rem;
   content: "𒀽";
 }
-#btnDelChecked {
-  align-self: flex-end;
-}
+
 #radio-wrapper {
   display: flex;
   align-items: center;
@@ -399,6 +398,9 @@ li::before {
     rgba(0, 130, 153, 0) 70%
   );
 }
+#wrapper-search {
+  /* padding: 4rem; */
+}
 .wrapper-searcher {
 }
 .searcher-by {
@@ -414,6 +416,50 @@ li::before {
   gap: 0.5rem;
   color: var(--mainColor);
 }
+#btnDelChecked {
+  margin-left: auto;
+  margin-right: 1rem;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  font-weight: 800;
+  color: var(--infoColor);
+  cursor: pointer;
+  /* background: radial-gradient(circle at center, red, yellow, green);
+  transition: background 1s ease-in-out; */
+}
+#btnDelChecked:hover {
+  color: var(--mainColor);
+  /* background: radial-gradient(ellipse, green 20%, red 50%, blue 100%); */
+  /* -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientAnimation 1s infinite linear,
+    pulse 330ms infinite ease-in-out; */
+}
+/* @keyframes pulse {
+  0% {
+    background: radial-gradient(circle at center, red, yellow, green);
+  }
+  30% {
+    background: radial-gradient(circle at center, yellow, green, red);
+  }
+  60% {
+    background: radial-gradient(circle at center, green, red, yellow);
+  }
+  100% {
+    background: radial-gradient(circle at center, red, yellow, green);
+  }
+}
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} */
 .btn-pages {
   width: 1rem;
   height: 1.5rem;

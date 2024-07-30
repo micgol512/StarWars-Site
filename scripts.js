@@ -113,7 +113,7 @@ function createTable(key) {
   //     document
   //       .getElementById("closeInfoBtn")
   //       .addEventListener("click", function () {
-  //         document.getElementById("customAlert").remove();
+  //         document.getElementById("showInfoBox").remove();
   //       });
   //   });
   // });
@@ -160,9 +160,10 @@ function createTable(key) {
     </select>
   `;
   // ❰❱𒌍𒌋⫷⫸ ↪︎ ↩︎
-  searcher.append(pagesWrapper);
-  // contenter.append(pagesWrapper);
+  // searcher.append(pagesWrapper);
+  contenter.append(pagesWrapper);
   // showTableBody();
+
   const btnChange = document.querySelectorAll(".btn-pages");
   const allPages = document.getElementById("all-pages");
   const currPage = document.getElementById("curr-page");
@@ -261,13 +262,15 @@ function createTable(key) {
     // console.log("PAGES VALUE");
   });
 }
-function createActions(parent) {
+function createActions(parent, index) {
+  //console.log("Create Buttons in: ", parent);
+  const activeBtn = document.querySelector(".active").innerText.toLowerCase();
   const editBtn = document.createElement("button");
   editBtn.textContent = "✙";
   editBtn.setAttribute("class", "showBtn");
   const deleteBtn = document.createElement("button");
-  // deleteBtn.innerHTML = ``;
   deleteBtn.setAttribute("class", "deleteBtn");
+  // deleteBtn.innerHTML = ``;
   const checkBox = document.createElement("input");
   checkBox.setAttribute("class", "checkBoxSelect");
   checkBox.setAttribute("type", "checkbox");
@@ -276,6 +279,91 @@ function createActions(parent) {
   $td.setAttribute("class", "content-buttons");
   $td.append(editBtn, deleteBtn, checkBox);
   parent.append($td);
+  ///////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////
+
+  // const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
+  // delBtnTab.forEach((btn, index) => {
+  //   console.log("Lecimy po butonach: ", btn);
+  //   btn.addEventListener("click", () => {
+  //     console.log("Klikniety", btn);
+  //     document.getElementById(`row-${index}`).remove();
+  //   });
+  // });
+  editBtn.addEventListener("click", () => {
+    // console.log(key);
+    createInfo(activeBtn, index);
+    document
+      .getElementById("closeInfoBtn")
+      .addEventListener("click", function () {
+        document.getElementById("showInfoBox").remove();
+      });
+  });
+  console.log(
+    `Parent: ${document.getElementById(`row-${index}`)}
+    Index: ${index}
+    `,
+    Array.from(document.querySelectorAll(".deleteBtn"))[index]
+  );
+  deleteBtn.addEventListener("click", () => {
+    console.log("Klikam");
+    document.getElementById(`row-${index}`).remove();
+  });
+
+  // deleteBtn.addEventListener("click", () => {
+  //   document.getElementById(`row-${index}`).remove();
+  //   // showTableBody();
+  //   /////////////////////////////
+  //   // document.getElementById("all-pages").innerText = `${Math.ceil(
+  //   //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
+  //   // )}`;
+  //   /////////////////////////////
+  // });
+  // const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
+  // showBtnTab.forEach((btn, index) => {
+  //   btn.addEventListener("click", () => {
+  //     // console.log(key);
+  //     createInfo(activeBtn, index);
+  //     document
+  //       .getElementById("closeInfoBtn")
+  //       .addEventListener("click", function () {
+  //         document.getElementById("showInfoBox").remove();
+  //       });
+  //   });
+  // });
+  let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  let btnDelChecked = null;
+  checkBoxTab.forEach((check, index) => {
+    check.addEventListener("change", () => {
+      checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+      let isChecked = checkBoxTab.some((item) => item.checked);
+      if (!document.getElementById("btnDelChecked")) {
+        btnDelChecked = document.createElement("button");
+        btnDelChecked.textContent = "Remove all";
+        btnDelChecked.setAttribute("id", "btnDelChecked");
+        document.getElementById("wrapper-search").append(btnDelChecked);
+      }
+      if (!isChecked) {
+        btnDelChecked.remove();
+      } else {
+        // const indexToDel = [];
+        // checkBoxTab.forEach((item, index) => {
+        //   if (item.checked === true) {
+        //     indexToDel.push(index);
+        //   }
+        // });
+        btnDelChecked.addEventListener("click", () => {
+          /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
+          document.getElementById(`row-${index}`).remove();
+          btnDelChecked.remove();
+          // showTableBody();
+        });
+      }
+    });
+  });
+
+  ///////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////
 }
 function setColor(select) {
   switch (select) {
@@ -324,25 +412,25 @@ function setColor(select) {
   }
 }
 function createInfo(btnName, index) {
-  if (document.getElementById("customAlert")) {
-    document.getElementById("customAlert").remove();
+  if (document.getElementById("showInfoBox")) {
+    document.getElementById("showInfoBox").remove();
   }
   const infoRow = rowData[btnName][index];
   const windowInfo = document.createElement("div");
-  windowInfo.setAttribute("id", "customAlert");
-  windowInfo.setAttribute("class", "info");
+  windowInfo.setAttribute("id", "showInfoBox");
+  // windowInfo.setAttribute("class", "info");
   // windowInfo.innerHTML = `
   // <div id="info-content"><div class="info-title"><span><strong> ${
   //   infoRow.name || infoRow.title
   // }</strong></span>
-  //   <span class="closeBtn" id="closeInfoBtn">&times;</span>
+  //   <span id="closeInfoBtn">&times;</span>
   // </div>
   // </div>`;
   windowInfo.innerHTML = `<div id="info-wrapper">
     <div class="info-title"><span><strong> ${
       infoRow.name || infoRow.title
     }</strong></span>
-    <span class="closeBtn" id="closeInfoBtn">𒉽</span>
+    <span id="closeInfoBtn">𒉽</span>
   </div>
   <div id="info-content">
   </div></div>`;
@@ -475,21 +563,21 @@ function showTableBody(searchBy = null) {
 }
 
 function createData() {
-  const key = document.querySelector(".active").innerText.toLowerCase();
-  console.log(key);
+  const activeBtn = document.querySelector(".active").innerText.toLowerCase();
+  // console.log(key);
   if (document.getElementById("nothing-to-show"))
     document.getElementById("nothing-to-show").remove();
-  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  const currPage = document.getElementById("curr-page");
-  console.log(rowData[key][0]);
-  const rowKeys = Object.keys(rowData[key][0]);
+  // const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+  // const currPage = document.getElementById("curr-page");
+  // console.log(rowData[activeBtn][0]);
+  const rowKeys = Object.keys(rowData[activeBtn][0]);
 
   const $thead = document.getElementById("table-head");
-  console.log("THEAD", $thead);
-  const content = rowData[key];
+  // console.log("THEAD", $thead);
+  const content = rowData[activeBtn];
   let head1 = "name";
   let head2, head3;
-  switch (key.toLowerCase()) {
+  switch (activeBtn.toLowerCase()) {
     case "vehicles":
       head2 = rowKeys[1];
       head3 = rowKeys[2];
@@ -526,10 +614,9 @@ function createData() {
     <th>CREATED</th>
     <th>ACTIONS</th>
   </tr>`;
-
+  const tbody = document.getElementById("table-body");
   content.forEach((element, index) => {
-    const $tbody = document.getElementById("table-body");
-    $tbody.innerHTML += `<tr id="row-${index}">
+    tbody.innerHTML += `<tr id="row-${index}">
         <td>${index + 1}.</td>
         <td>${element[head1]}</td>
         <td>${element[head2]}</td>
@@ -537,65 +624,65 @@ function createData() {
         <td>${formatDate(element.created)}</td>  
       </tr>`;
     //<td id="action-buttons${index}" class="content-buttons"></td>
-    createActions(document.getElementById(`row-${index}`));
+    createActions(document.getElementById(`row-${index}`), index);
     // if (index > 9) {
     //   document.getElementById(`row-${index}`).style.display = "none";
     // }
   });
-  const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
-  delBtnTab.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      document.getElementById(`row-${index}`).remove();
-      // showTableBody();
-      /////////////////////////////
-      // document.getElementById("all-pages").innerText = `${Math.ceil(
-      //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
-      // )}`;
-      /////////////////////////////
-    });
-  });
-  const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
-  showBtnTab.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      // console.log(key);
-      createInfo(key, index);
-      document
-        .getElementById("closeInfoBtn")
-        .addEventListener("click", function () {
-          document.getElementById("customAlert").remove();
-        });
-    });
-  });
-  let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-  let btnDelChecked = null;
-  checkBoxTab.forEach((check, index) => {
-    check.addEventListener("change", () => {
-      checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-      let isChecked = checkBoxTab.some((item) => item.checked);
-      if (!document.getElementById("btnDelChecked")) {
-        btnDelChecked = document.createElement("button");
-        btnDelChecked.textContent = "Remove all";
-        btnDelChecked.setAttribute("id", "btnDelChecked");
-        document.getElementById("wrapper-search").append(btnDelChecked);
-      }
-      if (!isChecked) {
-        btnDelChecked.remove();
-      } else {
-        // const indexToDel = [];
-        // checkBoxTab.forEach((item, index) => {
-        //   if (item.checked === true) {
-        //     indexToDel.push(index);
-        //   }
-        // });
-        btnDelChecked.addEventListener("click", () => {
-          /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
-          document.getElementById(`row-${index}`).remove();
-          btnDelChecked.remove();
-          // showTableBody();
-        });
-      }
-    });
-  });
+  // const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
+  // delBtnTab.forEach((btn, index) => {
+  //   btn.addEventListener("click", () => {
+  //     document.getElementById(`row-${index}`).remove();
+  //     // showTableBody();
+  //     /////////////////////////////
+  //     // document.getElementById("all-pages").innerText = `${Math.ceil(
+  //     //   Array.from(tBody).length / pages.options[pages.selectedIndex].text
+  //     // )}`;
+  //     /////////////////////////////
+  //   });
+  // });
+  // const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
+  // showBtnTab.forEach((btn, index) => {
+  //   btn.addEventListener("click", () => {
+  //     // console.log(key);
+  //     createInfo(key, index);
+  //     document
+  //       .getElementById("closeInfoBtn")
+  //       .addEventListener("click", function () {
+  //         document.getElementById("showInfoBox").remove();
+  //       });
+  //   });
+  // });
+  // let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  // let btnDelChecked = null;
+  // checkBoxTab.forEach((check, index) => {
+  //   check.addEventListener("change", () => {
+  //     checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  //     let isChecked = checkBoxTab.some((item) => item.checked);
+  //     if (!document.getElementById("btnDelChecked")) {
+  //       btnDelChecked = document.createElement("button");
+  //       btnDelChecked.textContent = "Remove all";
+  //       btnDelChecked.setAttribute("id", "btnDelChecked");
+  //       document.getElementById("wrapper-search").append(btnDelChecked);
+  //     }
+  //     if (!isChecked) {
+  //       btnDelChecked.remove();
+  //     } else {
+  //       // const indexToDel = [];
+  //       // checkBoxTab.forEach((item, index) => {
+  //       //   if (item.checked === true) {
+  //       //     indexToDel.push(index);
+  //       //   }
+  //       // });
+  //       btnDelChecked.addEventListener("click", () => {
+  //         /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
+  //         document.getElementById(`row-${index}`).remove();
+  //         btnDelChecked.remove();
+  //         // showTableBody();
+  //       });
+  //     }
+  //   });
+  // });
 }
 function showContent() {
   if (document.getElementById("nothing-to-show"))
@@ -781,7 +868,7 @@ const vaderSound = new Audio("./media/audio/vader.mp3");
 const yodaSound = new Audio("./media/audio/yoda.mp3");
 // vaderSound.loop = false;
 document.addEventListener("keypress", ({ key }) => {
-  keyCatcher.push(key);
+  keyCatcher.push(key.toLowerCase());
   if (keyCatcher.length > keyVader.length) {
     keyCatcher.shift();
   }
@@ -822,26 +909,26 @@ menuBtnNames.forEach((btnName, index) => {
 // //////  Array.from(tBody).length /
 
 // document.getElementById("showAlertBtn").addEventListener("click", function () {
-//   document.getElementById("customAlert").style.display = "block";
+//   document.getElementById("showInfoBox").style.display = "block";
 // });
 
 // document.getElementById("closeInfoBtn").addEventListener("click", function () {
-//   document.getElementById("customAlert").style.display = "none";
+//   document.getElementById("showInfoBox").style.display = "none";
 // });
 
 // // Close the info box when clicking anywhere outside of it
 // window.onclick = function (event) {
-//   if (event.target == document.getElementById("customAlert")) {
-//     document.getElementById("customAlert").style.display = "none";
+//   if (event.target == document.getElementById("showInfoBox")) {
+//     document.getElementById("showInfoBox").style.display = "none";
 //   }
 // }
 document.getElementById("sprawdzaj").addEventListener("click", () => {
   // searchByText("Luke");
-  changeCurrPage();
-  checkButtonPages();
-  showTableBody();
-  const sprawdz = document.querySelector(".active").innerText;
-  console.log(sprawdz);
+  // changeCurrPage();
+  // checkButtonPages();
+  // showTableBody();
+  // const sprawdz = document.querySelector(".active").innerText;
+  // console.log(sprawdz);
   createData();
   // test();
 });

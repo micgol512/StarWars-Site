@@ -38,6 +38,14 @@ header {
   background-color: var(--notBlack);
   color: var(--btnBgHoverColor);
   text-shadow: 0 0 15px var(--notWhite);
+  cursor: default;
+}
+
+header > div > strong {
+  cursor: url("./media/helpfull/Yoda.png"), pointer;
+}
+header > div > strong ~ strong {
+  cursor: url("./media/helpfull/DarthVader.png"), pointer;
 }
 .menuBtns {
   box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
@@ -219,7 +227,7 @@ header {
   text-align: center;
 } */
 /* info Box */
-.info {
+#showInfoBox {
   display: block;
   position: fixed;
   z-index: 1;
@@ -286,7 +294,7 @@ header {
   border-radius: 0.5rem;
 }
 
-.closeBtn {
+#closeInfoBtn {
   position: absolute;
   top: -0.15rem;
   right: 0.25rem;
@@ -295,8 +303,9 @@ header {
   font-size: 1.5rem;
   font-weight: bold;
 }
-.closeBtn:hover,
-.closeBtn:focus {
+
+#closeInfoBtn:hover,
+#closeInfoBtn:focus {
   color: var(--notBlack);
   text-decoration: none;
   cursor: pointer;
@@ -381,6 +390,7 @@ li::before {
     rgba(51, 255, 68, 0.3) 28%,
     rgba(0, 153, 13, 0) 70%
   );
+  cursor: url("./media/helpfull/YodaLightsaber.png"), pointer;
 }
 #site-2 {
   background-image: radial-gradient(
@@ -389,6 +399,7 @@ li::before {
     rgba(255, 51, 51, 0.3) 28%,
     rgba(153, 0, 0, 0) 70%
   );
+  cursor: url("./media/helpfull/DarthVaderLightsaber.png"), pointer;
 }
 #site-3 {
   background-image: radial-gradient(
@@ -397,6 +408,7 @@ li::before {
     rgba(51, 231, 255, 0.3) 28%,
     rgba(0, 130, 153, 0) 70%
   );
+  cursor: url("./media/helpfull/ObiLightsaber.png"), pointer;
 }
 #wrapper-search {
   /* padding: 4rem; */

@@ -7,6 +7,53 @@ function formatDate(date) {
   const day = String(date.getDate()).padStart(2, "0");
   return `${day}-${month}-${year}`;
 }
+function createRowBtnActions(key) {
+  const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
+  delBtnTab.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      document.getElementById(`row-${index}`).remove();
+    });
+  });
+  const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
+  showBtnTab.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      createInfo(key, index);
+      document
+        .getElementById("closeInfoBtn")
+        .addEventListener("click", function () {
+          document.getElementById("showInfoBox").remove();
+        });
+    });
+  });
+
+  let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  let btnDelChecked = null;
+  checkBoxTab.forEach((check, index) => {
+    function removeRowWithIndex() {
+      document.getElementById(`row-${index}`).remove();
+      btnDelChecked.remove();
+    }
+    check.addEventListener("change", () => {
+      checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+      let isSomeChecked = checkBoxTab.some((item) => item.checked);
+      console.log("Czy zaznaczone?", isSomeChecked);
+      if (!document.getElementById("btnDelChecked")) {
+        btnDelChecked = document.createElement("button");
+        btnDelChecked.textContent = "Remove all";
+        btnDelChecked.setAttribute("id", "btnDelChecked");
+        document.getElementById("wrapper-search").append(btnDelChecked);
+      }
+      if (!isSomeChecked) {
+        btnDelChecked.remove();
+      }
+      if (!check.checked) {
+        btnDelChecked.removeEventListener("click", removeRowWithIndex);
+      } else {
+        btnDelChecked.addEventListener("click", removeRowWithIndex);
+      }
+    });
+  });
+}
 function createTable(key) {
   if (document.getElementById("wrapper-content")) {
     document.getElementById("wrapper-content").remove();
@@ -75,7 +122,8 @@ function createTable(key) {
   //       <th>CREATED</th>
   //       <th>ACTIONS</th>
   //     </tr>`;
-  createData();
+  createData(key);
+  createRowBtnActions(key);
   // const content = rowData[key];
   // content.forEach((element, index) => {
   //   const $tbody = document.getElementById("table-body");
@@ -262,9 +310,9 @@ function createTable(key) {
     // console.log("PAGES VALUE");
   });
 }
-function createActions(parent, index) {
-  //console.log("Create Buttons in: ", parent);
-  const activeBtn = document.querySelector(".active").innerText.toLowerCase();
+function createActionsBtns(parent, index) {
+  console.log("To otrzymuję: ", parent);
+  // const activeBtn = document.querySelector(".active").innerText.toLowerCase();
   const editBtn = document.createElement("button");
   editBtn.textContent = "✙";
   editBtn.setAttribute("class", "showBtn");
@@ -290,25 +338,25 @@ function createActions(parent, index) {
   //     document.getElementById(`row-${index}`).remove();
   //   });
   // });
-  editBtn.addEventListener("click", () => {
-    // console.log(key);
-    createInfo(activeBtn, index);
-    document
-      .getElementById("closeInfoBtn")
-      .addEventListener("click", function () {
-        document.getElementById("showInfoBox").remove();
-      });
-  });
-  console.log(
-    `Parent: ${document.getElementById(`row-${index}`)}
-    Index: ${index}
-    `,
-    Array.from(document.querySelectorAll(".deleteBtn"))[index]
-  );
-  deleteBtn.addEventListener("click", () => {
-    console.log("Klikam");
-    document.getElementById(`row-${index}`).remove();
-  });
+  // editBtn.addEventListener("click", () => {
+  //   // console.log(key);
+  //   createInfo(activeBtn, index);
+  //   document
+  //     .getElementById("closeInfoBtn")
+  //     .addEventListener("click", function () {
+  //       document.getElementById("showInfoBox").remove();
+  //     });
+  // });
+  // console.log(
+  //   `Parent: ${parent}
+  //   Index: ${index}
+  //   `
+  // );
+
+  // deleteBtn.addEventListener("click", () => {
+  //   console.log("Klikam");
+  //   document.getElementById(`row-${index}`).remove();
+  // });
 
   // deleteBtn.addEventListener("click", () => {
   //   document.getElementById(`row-${index}`).remove();
@@ -331,36 +379,36 @@ function createActions(parent, index) {
   //       });
   //   });
   // });
-  let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-  let btnDelChecked = null;
-  checkBoxTab.forEach((check, index) => {
-    check.addEventListener("change", () => {
-      checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-      let isChecked = checkBoxTab.some((item) => item.checked);
-      if (!document.getElementById("btnDelChecked")) {
-        btnDelChecked = document.createElement("button");
-        btnDelChecked.textContent = "Remove all";
-        btnDelChecked.setAttribute("id", "btnDelChecked");
-        document.getElementById("wrapper-search").append(btnDelChecked);
-      }
-      if (!isChecked) {
-        btnDelChecked.remove();
-      } else {
-        // const indexToDel = [];
-        // checkBoxTab.forEach((item, index) => {
-        //   if (item.checked === true) {
-        //     indexToDel.push(index);
-        //   }
-        // });
-        btnDelChecked.addEventListener("click", () => {
-          /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
-          document.getElementById(`row-${index}`).remove();
-          btnDelChecked.remove();
-          // showTableBody();
-        });
-      }
-    });
-  });
+  // let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  // let btnDelChecked = null;
+  // checkBoxTab.forEach((check, index) => {
+  //   check.addEventListener("change", () => {
+  //     checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
+  //     let isChecked = checkBoxTab.some((item) => item.checked);
+  //     if (!document.getElementById("btnDelChecked")) {
+  //       btnDelChecked = document.createElement("button");
+  //       btnDelChecked.textContent = "Remove all";
+  //       btnDelChecked.setAttribute("id", "btnDelChecked");
+  //       document.getElementById("wrapper-search").append(btnDelChecked);
+  //     }
+  //     if (!isChecked) {
+  //       btnDelChecked.remove();
+  //     } else {
+  //       // const indexToDel = [];
+  //       // checkBoxTab.forEach((item, index) => {
+  //       //   if (item.checked === true) {
+  //       //     indexToDel.push(index);
+  //       //   }
+  //       // });
+  //       btnDelChecked.addEventListener("click", () => {
+  //         /////////LOGIKA USUWANIA ZAZNACZONYCH ELELEMENTÓW
+  //         document.getElementById(`row-${index}`).remove();
+  //         btnDelChecked.remove();
+  //         // showTableBody();
+  //       });
+  //     }
+  //   });
+  // });
 
   ///////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////
@@ -561,9 +609,8 @@ function showTableBody(searchBy = null) {
     document.getElementById("table-body").append(nothingToShow);
   }
 }
-
-function createData() {
-  const activeBtn = document.querySelector(".active").innerText.toLowerCase();
+function createData(activeBtn) {
+  // const activeBtn = document.querySelector(".active").innerText.toLowerCase();
   // console.log(key);
   if (document.getElementById("nothing-to-show"))
     document.getElementById("nothing-to-show").remove();
@@ -624,7 +671,11 @@ function createData() {
         <td>${formatDate(element.created)}</td>  
       </tr>`;
     //<td id="action-buttons${index}" class="content-buttons"></td>
-    createActions(document.getElementById(`row-${index}`), index);
+    console.log(
+      "To wrzucam we funkcję:",
+      document.getElementById(`row-${index}`)
+    );
+    createActionsBtns(document.getElementById(`row-${index}`), index);
     // if (index > 9) {
     //   document.getElementById(`row-${index}`).style.display = "none";
     // }

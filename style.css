@@ -411,7 +411,12 @@ li::before {
   cursor: url("./media/helpfull/ObiLightsaber.png"), pointer;
 }
 #wrapper-search {
-  /* padding: 4rem; */
+  position: relative;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  /* width: Min(75vw, 1920px); */
+  padding: 0.5rem 4rem;
+  gap: 1rem;
 }
 .wrapper-searcher {
 }
@@ -429,13 +434,16 @@ li::before {
   color: var(--mainColor);
 }
 #btnDelChecked {
-  margin-left: auto;
-  margin-right: 1rem;
+  position: absolute;
+  top: -1px;
+  right: 1rem;
   border-radius: 0.5rem;
+  /* height: 2rem; */
   padding: 0.4rem;
   font-weight: 800;
   color: var(--infoColor);
   cursor: pointer;
+  text-align: center;
   /* background: radial-gradient(circle at center, red, yellow, green);
   transition: background 1s ease-in-out; */
 }

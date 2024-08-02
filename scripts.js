@@ -7,53 +7,6 @@ function formatDate(date) {
   const day = String(date.getDate()).padStart(2, "0");
   return `${day}-${month}-${year}`;
 }
-function createRowBtnActions(key) {
-  const delBtnTab = Array.from(document.querySelectorAll(".deleteBtn"));
-  delBtnTab.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      document.getElementById(`row-${index}`).remove();
-    });
-  });
-  const showBtnTab = Array.from(document.querySelectorAll(".showBtn"));
-  showBtnTab.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      createInfo(key, index);
-      document
-        .getElementById("closeInfoBtn")
-        .addEventListener("click", function () {
-          document.getElementById("showInfoBox").remove();
-        });
-    });
-  });
-
-  let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-  let btnDelChecked = null;
-  checkBoxTab.forEach((check, index) => {
-    function removeRowWithIndex() {
-      document.getElementById(`row-${index}`).remove();
-      btnDelChecked.remove();
-    }
-    check.addEventListener("change", () => {
-      checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
-      let isSomeChecked = checkBoxTab.some((item) => item.checked);
-      console.log("Czy zaznaczone?", isSomeChecked);
-      if (!document.getElementById("btnDelChecked")) {
-        btnDelChecked = document.createElement("button");
-        btnDelChecked.textContent = "Remove all";
-        btnDelChecked.setAttribute("id", "btnDelChecked");
-        document.getElementById("wrapper-search").append(btnDelChecked);
-      }
-      if (!isSomeChecked) {
-        btnDelChecked.remove();
-      }
-      if (!check.checked) {
-        btnDelChecked.removeEventListener("click", removeRowWithIndex);
-      } else {
-        btnDelChecked.addEventListener("click", removeRowWithIndex);
-      }
-    });
-  });
-}
 function createTable(key) {
   if (document.getElementById("wrapper-content")) {
     document.getElementById("wrapper-content").remove();
@@ -140,8 +93,8 @@ function createTable(key) {
     </select>
   `;
   // ❰❱𒌍𒌋⫷⫸ ↪︎ ↩︎
-  searcher.append(pagesWrapper);
-  // contenter.append(pagesWrapper);
+  // searcher.append(pagesWrapper);
+  contenter.append(pagesWrapper);
   // showTableBody();
   paginacja();
 
@@ -151,7 +104,7 @@ function createTable(key) {
   const pages = document.getElementById("amount-item");
   const searchById = document.getElementById("input-search-index");
   const searchByTxt = document.getElementById("input-search-text");
-  if (allPages.innerText === "1") btnChange[1].setAttribute("disabled", "");
+  // if (allPages.innerText === "1") btnChange[1].setAttribute("disabled", "");
   btnChange.forEach((btn, index) => {
     btn.addEventListener("click", () => {
       switch (index) {
@@ -205,8 +158,11 @@ function createTable(key) {
     }
   });
   pages.addEventListener("change", () => {
-    let tempPagesTen;
-    let tempCurrPageTen;
+    const firstRow = Array.from(
+      document.querySelectorAll("#table-body tr")
+    ).findIndex((element) => element.style.display !== "none");
+    // let tempCurrPage;
+    currPage.value = Math.floor(firstRow / pages.value) + 1;
     paginacja();
   });
   ///////////////////////////////////////////////////////////////////////////////////////
@@ -426,99 +382,6 @@ function createInfo(btnName, index) {
     infoContent.innerHTML += "</ul>";
   }
 }
-function showTableBody(searchBy = null) {
-  if (document.getElementById("nothing-to-show"))
-    document.getElementById("nothing-to-show").remove();
-  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  const currPage = document.getElementById("curr-page");
-  // let pages = document.getElementById("amount-item");
-  // pages =
-  //   pages.options[pages.selectedIndex].text !== null
-  //     ? pages.options[pages.selectedIndex].text
-  //     : 10;
-  const pages = parseInt(document.getElementById("amount-item").value);
-  document.getElementById("all-pages").innerText = `${Math.ceil(
-    tBody.length / pages
-  )}`;
-  // currPage.value=
-  const searchById = document.getElementById("input-search-index");
-  const searchByText = document.getElementById("input-search-text");
-  searchById.setAttribute("placeholder", `1-${tBody.length}`);
-  if (tBody.length !== 0) {
-    tBody.forEach((element, index) => {
-      if (Math.floor(index / pages) === currPage.value - 1) {
-        element.removeAttribute("style");
-      } else {
-        element.style.display = "none";
-      }
-    });
-    if (searchById.value !== "") {
-      searchByText(searchById.value);
-    }
-    // if (searchByText !== "") {
-    //   let counter = currPage.value * pages - pages;
-    //   console.log(counter);
-    //   tBody.forEach((element, index) => {
-    //     const texts = element.querySelectorAll("td")[1].innerText.toLowerCase();
-    //     if (
-    //       texts.includes(searchByText.value.toLowerCase()) &&
-    //       counter++ < 10
-    //     ) {
-    //       element.removeAttribute("style");
-    //     } else {
-    //       element.style.display = "none";
-    //     }
-    //   });
-    // }
-
-    // tBody.forEach((element, index) => {
-    //   if (searchBy === null) {
-    //     if (Math.floor(index / pages) === currPage - 1) {
-    //       element.removeAttribute("style");
-    //     } else {
-    //       element.style.display = "none";
-    //     }
-    //   } else {
-    //     if (typeof searchBy === "number") {
-    //       // const id = Array.from(
-    //       //   document.querySelectorAll("#table-body>tr td:nth-child(1)")
-    //       // );
-    //       // console.log(id);
-    //       if (index === searchBy - 1) {
-    //         // console.log("INDEX równy SearchBy. A elemetn to: ", element);
-    //         element.removeAttribute("style");
-    //       } else {
-    //         element.style.display = "none";
-    //       }
-    //     } else if (typeof searchBy === "string") {
-    //       const texts = element
-    //         .querySelectorAll("td")[1]
-    //         .innerText.toLowerCase();
-    //       console.log(texts);
-    //       if (texts.includes(searchBy.toLowerCase())) {
-    //         element.removeAttribute("style");
-    //       } else {
-    //         element.style.display = "none";
-    //       }
-    //       // console.log(pages);
-    //       // document.getElementById("all-pages").innerText = `${Math.ceil(
-    //       //   Array.from(tBody).filter((row) => row.style.display !== "none")
-    //       //     .length / pages
-    //       // )}`;
-    //     }
-    //   }
-    // });
-  }
-  if (
-    tBody.length === 0 ||
-    tBody.length === tBody.filter((row) => row.style.display === "none").length
-  ) {
-    const nothingToShow = document.createElement("tr");
-    nothingToShow.setAttribute("id", "nothing-to-show");
-    nothingToShow.innerHTML += `<td>"Brak elelemntów do wyświetlenia"</td>`;
-    document.getElementById("table-body").append(nothingToShow);
-  }
-}
 function createData() {
   const activeBtn = document.querySelector(".active").innerText.toLowerCase();
   // console.log(key);
@@ -595,184 +458,6 @@ function createData() {
   });
   checkBoxAddListener();
 }
-function name(params) {
-  const btnChange = document.querySelectorAll(".btn-pages");
-  const allPages = document.getElementById("all-pages");
-  const currPage = document.getElementById("curr-page");
-  const pages = document.getElementById("amount-item");
-  const searchById = document.getElementById("input-search-index");
-  const searchByTxt = document.getElementById("input-search-text");
-  if (allPages.innerText === "1") btnChange[1].setAttribute("disabled", "");
-  btnChange.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      switch (index) {
-        case 0:
-          currPage.value--;
-          // checkButtonPages();
-          break;
-        case 1:
-          currPage.value++;
-          // checkButtonPages();
-          break;
-        default:
-          alert("Coś jest źle!!");
-          break;
-      }
-      // showTableBody();
-      checkButtonPages();
-    });
-  });
-
-  currPage.addEventListener("input", () => {
-    searchById.value = "";
-    searchByTxt.value = "";
-    if (
-      parseInt(currPage.value) > 0 &&
-      parseInt(currPage.value) <= parseInt(allPages.innerText)
-    ) {
-      // showTableBody();
-      checkButtonPages();
-      // console.log(allPages.innerText);
-    } else {
-      currPage.value = "";
-      console.log("złe dane");
-      checkButtonPages();
-    }
-
-    // console.log(currPage.value);
-    ////
-    ////sprawdzić czy wproiwadzona wartość to liczba i potem czy nie przekracza zakresu allpages
-    ////
-    ////
-    ////
-    ////
-    ////
-    //// 19799773
-  });
-  pages.addEventListener("change", () => {
-    // console.log(pages.options[pages.selectedIndex].text);
-    //USTAWIĆ ODPOWIENDNIO currPage
-    //currPage.value=
-    // searchById.value = "";
-    // searchByText.value = "";
-    // const tempPages = parseInt(document.getElementById("all-pages").innerText);
-    // currPage.value = Math.floor(
-    //   (parseInt(document.getElementById("all-pages").innerText) *
-    //     parseInt(currPage.value)) /
-    //     tempPages
-    // );
-    showTableBody();
-  });
-  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  searchById.setAttribute("placeholder", `1-${tBody.length}`);
-  searchById.addEventListener("input", () => {
-    searchByText.value = "";
-    currPage.value = 1;
-    if (searchById.value > 0 && searchById.value <= rowData[key].length) {
-      // console.log("TempID:", tempId);
-      //////////////////////////
-      // showTableBody(parseInt(searchById.value));
-      ///////////////////////////
-    } else {
-      // showTableBody();
-      searchById.value = "";
-      console.log("złe dane");
-    }
-    checkButtonPages();
-  });
-  let tempText = "nazwie";
-  if (key === "films") tempText = "tytule";
-  searchByTxt.setAttribute("placeholder", `Wyszukaj po ${tempText}`);
-  searchByTxt.addEventListener("input", () => {
-    //////////////////////////
-    currPage.value = 1;
-    searchById.value = "";
-    searchByText(searchByTxt.value);
-    // console.log(searchByText.value);
-    // if (searchByText.value === "") showTableBody();
-    // else showTableBody(searchByText.value);
-    // console.log("PAGES VALUE");
-  });
-}
-function showContent() {
-  if (document.getElementById("nothing-to-show"))
-    document.getElementById("nothing-to-show").remove();
-
-  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  const currPage = document.getElementById("curr-page").value;
-  const searchByID = document.getElementById("input-search-index");
-  const searchByText = document.getElementById("input-search-text");
-  let searchBy;
-  const pages = parseInt(document.getElementById("amount-item").value);
-  document.getElementById("all-pages").innerText = `${Math.ceil(
-    tBody.length / pages
-  )}`;
-  document.getElementById("all-pages").innerText = `${Math.ceil(
-    tBody.length / pages
-  )}`;
-  searchByID.setAttribute("placeholder", `1-${tBody.length}`);
-  if (searchByID.value !== "") {
-    searchBy = searchByID.value;
-  } else if (searchByText.value !== "") {
-    searchBy = searchByText.value;
-  } else {
-    searchBy = null;
-  }
-  if (tBody.length !== 0) {
-    tBody.forEach((element, index) => {
-      if (searchBy === null) {
-        if (Math.floor(index / pages) === currPage - 1) {
-          element.removeAttribute("style");
-        } else {
-          element.style.display = "none";
-        }
-      } else {
-        if (typeof searchBy === "number") {
-          // const id = Array.from(
-          //   document.querySelectorAll("#table-body>tr td:nth-child(1)")
-          // );
-          // console.log(id);
-          if (index === searchBy - 1) {
-            // console.log("INDEX równy SearchBy. A elemetn to: ", element);
-            element.removeAttribute("style");
-          } else {
-            element.style.display = "none";
-          }
-        } else if (typeof searchBy === "string") {
-          const texts = Array.from(
-            document.querySelectorAll("#table-body>tr td:nth-child(2)")
-          );
-          if (
-            texts[index].innerText
-              .toLowerCase()
-              .includes(searchBy.toLowerCase())
-          ) {
-            element.removeAttribute("style");
-          } else {
-            element.style.display = "none";
-          }
-          // console.log(pages)
-          let tempPages = parseInt(
-            document.getElementById("all-pages").innerText
-          );
-          document.getElementById("all-pages").innerText = `${Math.ceil(
-            Array.from(tBody).filter((row) => row.style.display !== "none")
-              .length / pages
-          )}`;
-        }
-      }
-    });
-  }
-  if (
-    tBody.length === 0 ||
-    tBody.length === tBody.filter((row) => row.style.display === "none").length
-  ) {
-    const nothingToShow = document.createElement("tr");
-    nothingToShow.setAttribute("id", "nothing-to-show");
-    nothingToShow.innerHTML += `<td>"Brak elelemntów do wyświetlenia"</td>`;
-    document.getElementById("table-body").append(nothingToShow);
-  }
-}
 function checkButtonPages() {
   const btnChange = document.querySelectorAll(".btn-pages");
   const allPages = document.getElementById("all-pages");
@@ -808,26 +493,33 @@ function checkButtonPages() {
     }
   }
 }
-function changeCurrPage() {
-  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  const tBodyDisabled = tBody.filter((row) => row.style.display !== "none");
-  const currPage = document.getElementById("curr-page");
-  console.log("Disabled", tBodyDisabled);
-}
 function searchByIndex(search) {
-  search = parseInt(search);
-  const tBody = document.getElementById("table-body");
-  tBody.innerHTML = "";
-  createData();
-  if (isFinite(search)) {
+  // const tBody = document.getElementById("table-body");
+  // tBody.innerHTML = "";
+  // createData();
+  // if (isFinite(search)) {
+  //   const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
+  //   tBodyRows.forEach((element) => {
+  //     if (parseInt(element.querySelectorAll("td")[0].innerText) !== search) {
+  //       element.remove();
+  //     }
+  //   });
+  // }
+  if (search === "") {
+    paginacja();
+  } else {
     const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
-    tBodyRows.forEach((element) => {
-      if (parseInt(element.querySelectorAll("td")[0].innerText) !== search) {
-        element.remove();
-      }
+    tBodyRows.forEach((element, index) => {
+      if (
+        element
+          .querySelectorAll("td")[0]
+          .innerText.toLowerCase()
+          .includes(search.toLowerCase())
+      ) {
+        element.removeAttribute("style");
+      } else element.style.display = "none";
     });
   }
-  paginacja();
 }
 function searchByText(text = "") {
   const tBody = document.getElementById("table-body");
@@ -853,15 +545,21 @@ function searchByText(text = "") {
 function paginacja() {
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
   const allPages = document.getElementById("all-pages");
-  const currPage = parseInt(document.getElementById("curr-page").value) || 1;
-  const pages = parseInt(document.getElementById("amount-item").value);
+  const currPageValue =
+    parseInt(document.getElementById("curr-page").value) || 1;
+  const pagesValue = parseInt(document.getElementById("amount-item").value);
   const tempAllPages =
-    Math.ceil(tBody.length / pages) > 0 ? Math.ceil(tBody.length / pages) : 1;
+    Math.ceil(tBody.length / pagesValue) > 0
+      ? Math.ceil(tBody.length / pagesValue)
+      : 1;
   allPages.innerText = `${tempAllPages}`;
-  if (currPage > 1 && currPage > allPages.innerText) {
+  if (currPageValue > 1 && currPageValue > allPages.innerText) {
     document.getElementById("curr-page").value--;
     paginacja();
   } else {
+    const tBodyDisplayed = tBody.filter(
+      (element) => element.style.display === "none"
+    );
     if (tBody.length === 0) {
       const nothingToShow = document.createElement("tr");
       nothingToShow.setAttribute("id", "nothing-to-show");
@@ -869,7 +567,7 @@ function paginacja() {
       document.getElementById("table-body").append(nothingToShow);
     } else {
       tBody.forEach((element, index) => {
-        if (Math.floor(index / pages) === currPage - 1) {
+        if (Math.floor(index / pagesValue) === currPageValue - 1) {
           element.removeAttribute("style");
         } else {
           element.style.display = "none";
@@ -878,12 +576,6 @@ function paginacja() {
     }
     checkButtonPages();
   }
-}
-function test() {
-  const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  tBody[11].removeAttribute("style");
-  tBody[10].style.display = "";
-  // console.log(tBody[10]);
 }
 
 //////////////////  START ////////////////////
@@ -905,9 +597,6 @@ radioWrapper.append(label);
 //color site
 for (let i = 1; i <= 3; i++) {
   const radio = document.createElement("input");
-  radio.id = "site-1";
-  radio.type = "radio";
-  radio.name = "selectSide";
   radio.setAttribute("id", `site-${i}`);
   radio.setAttribute("type", "radio");
   radio.setAttribute("name", "selectSite");
@@ -918,13 +607,12 @@ for (let i = 1; i <= 3; i++) {
     setColor(i);
   });
 }
-// yoda lub vader
+// yoda lub vader sound
 const keyVader = "vader";
 const keyYoda = "yoda";
 let keyCatcher = ["."];
 const vaderSound = new Audio("./media/audio/vader.mp3");
 const yodaSound = new Audio("./media/audio/yoda.mp3");
-// vaderSound.loop = false;
 document.addEventListener("keypress", ({ key }) => {
   keyCatcher.push(key.toLowerCase());
   if (keyCatcher.length > keyVader.length) {
@@ -950,36 +638,16 @@ menuBtnNames.forEach((btnName, index) => {
   btn.setAttribute("id", `menuBtn-${index}`);
   btn.setAttribute("class", `menuBtns`);
   btn.innerText = btnName.toUpperCase();
-
   btn.addEventListener("click", () => {
     logo.remove();
     for (let i = 0; i < menuBtnNames.length; i++) {
       document.getElementById(`menuBtn-${i}`).setAttribute("class", `menuBtns`);
-      // console.log();
     }
     btn.setAttribute("class", `menuBtns active`);
-    //logika tworzenia info contentu po przycisku
     createTable(btnName);
-    // showTableBody();
   });
 });
 
-// //////  Array.from(tBody).length /
-
-// document.getElementById("showAlertBtn").addEventListener("click", function () {
-//   document.getElementById("showInfoBox").style.display = "block";
-// });
-
-// document.getElementById("closeInfoBtn").addEventListener("click", function () {
-//   document.getElementById("showInfoBox").style.display = "none";
-// });
-
-// // Close the info box when clicking anywhere outside of it
-// window.onclick = function (event) {
-//   if (event.target == document.getElementById("showInfoBox")) {
-//     document.getElementById("showInfoBox").style.display = "none";
-//   }
-// }
 document.getElementById("sprawdzaj").addEventListener("click", () => {
   // const text = document.getElementById("input-search-text").value;
   // console.log("text", text);
@@ -992,5 +660,5 @@ document.getElementById("sprawdzaj").addEventListener("click", () => {
   // createData();
   // test();
   // searchByIndex();
-  paginacja();
+  // paginacja();
 });

@@ -239,7 +239,7 @@ header > div > strong ~ strong {
   backdrop-filter: blur(3px);
   color: var(--notBlack);
 }
-/* wystylizować WRAPPER */
+
 #info-wrapper {
   display: flex;
   width: 90%;
@@ -288,12 +288,10 @@ header > div > strong ~ strong {
   background-color: var(--infoColor);
   border-radius: 0 0 0.5rem;
 }
-
 #info-content::-webkit-scrollbar-thumb {
   background-color: var(--mainColor);
   border-radius: 0.5rem;
 }
-
 #closeInfoBtn {
   position: absolute;
   top: -0.15rem;
@@ -303,7 +301,6 @@ header > div > strong ~ strong {
   font-size: 1.5rem;
   font-weight: bold;
 }
-
 #closeInfoBtn:hover,
 #closeInfoBtn:focus {
   color: var(--notBlack);
@@ -330,13 +327,11 @@ li::before {
   padding-left: 0.5rem;
   content: "𒀽";
 }
-
 #radio-wrapper {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
 .radioSite {
   appearance: none;
   display: block;
@@ -346,7 +341,7 @@ li::before {
   cursor: pointer;
   box-shadow: rgba(255, 255, 255, 0.15) 0 1px 1px,
     inset rgba(0, 0, 0, 0.5) 0 0 0 1px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.308);
   background-repeat: no-repeat;
   transition: background-position 0.15s cubic-bezier(0.8, 0, 1, 1),
     transform 0.25s cubic-bezier(0.8, 0, 1, 1);
@@ -384,6 +379,7 @@ li::before {
   background-color: rgba(0, 110, 255, 0.3);
 }
 #site-1 {
+  background-color: rgba(0, 50, 0, 0.3);
   background-image: radial-gradient(
     rgb(206, 255, 204) 0%,
     rgb(107, 255, 102) 15%,
@@ -393,6 +389,7 @@ li::before {
   cursor: url("./media/helpfull/YodaLightsaber.png"), pointer;
 }
 #site-2 {
+  background-color: rgba(50, 0, 0, 0.3);
   background-image: radial-gradient(
     rgb(255, 204, 204) 0%,
     rgb(255, 102, 102) 15%,
@@ -402,6 +399,7 @@ li::before {
   cursor: url("./media/helpfull/DarthVaderLightsaber.png"), pointer;
 }
 #site-3 {
+  background-color: rgba(0, 38, 50, 0.3);
   background-image: radial-gradient(
     rgb(204, 252, 255) 0%,
     rgb(102, 250, 255) 15%,
@@ -419,12 +417,25 @@ li::before {
   gap: 1rem;
 }
 .wrapper-searcher {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  align-items: baseline;
 }
 .searcher-by {
+  /* width: 2.5rem; */
+  height: 1.5rem;
+  border-radius: 0.3rem;
+  border: 1px solid;
+  color: var(--infoColor);
+  padding-left: 3px;
 }
-#input-search-index {
+
+#input-search-index::placeholder {
+  color: var(--btnBgColor);
 }
-#input-search-text {
+#input-search-text::placeholder {
+  color: var(--btnBgColor);
 }
 #wrapper-page-changer {
   display: flex;
@@ -435,51 +446,25 @@ li::before {
 }
 #btnDelChecked {
   position: absolute;
-  top: -1px;
+  top: 0px;
   right: 1rem;
-  border-radius: 0.5rem;
-  /* height: 2rem; */
+  border-radius: 1rem;
+  border: 1px solid var(--infoColor);
+  height: 2.5rem;
   padding: 0.4rem;
   font-weight: 800;
   color: var(--infoColor);
   cursor: pointer;
   text-align: center;
-  /* background: radial-gradient(circle at center, red, yellow, green);
-  transition: background 1s ease-in-out; */
+  /* background: radial-gradient(circle at center, red, yellow, green); */
+  /* transition: background 1s ease-in-out; */
 }
 #btnDelChecked:hover {
   color: var(--mainColor);
-  /* background: radial-gradient(ellipse, green 20%, red 50%, blue 100%); */
-  /* -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientAnimation 1s infinite linear,
-    pulse 330ms infinite ease-in-out; */
 }
-/* @keyframes pulse {
-  0% {
-    background: radial-gradient(circle at center, red, yellow, green);
-  }
-  30% {
-    background: radial-gradient(circle at center, yellow, green, red);
-  }
-  60% {
-    background: radial-gradient(circle at center, green, red, yellow);
-  }
-  100% {
-    background: radial-gradient(circle at center, red, yellow, green);
-  }
+button:active {
+  transform: scale(0.9);
 }
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-} */
 .btn-pages {
   width: 1rem;
   height: 1.5rem;
@@ -536,7 +521,7 @@ li::before {
     padding: 0.1rem;
   }
 }
-@media (max-width: 900px) {
+@media (max-width: 990px) {
   :root {
     font-size: 10px;
   }
@@ -545,5 +530,8 @@ li::before {
   }
   #table-body * {
     padding: 0.1rem;
+  }
+  #btnDelChecked {
+    right: 0rem;
   }
 }

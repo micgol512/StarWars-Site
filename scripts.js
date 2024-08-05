@@ -493,7 +493,7 @@ function checkButtonPages() {
     }
   }
 }
-function searchByIndex(search) {
+function searchByIndex(search = "") {
   // const tBody = document.getElementById("table-body");
   // tBody.innerHTML = "";
   // createData();
@@ -505,68 +505,88 @@ function searchByIndex(search) {
   //     }
   //   });
   // }
-  if (search === "") {
-    paginacja();
-  } else {
-    const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
-    tBodyRows.forEach((element, index) => {
-      if (
-        element
-          .querySelectorAll("td")[0]
-          .innerText.toLowerCase()
-          .includes(search.toLowerCase())
-      ) {
-        element.removeAttribute("style");
-      } else element.style.display = "none";
-    });
-  }
+  // if (search === "") {
+  //   paginacja();
+  // } else {
+  const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
+  tBodyRows.forEach((element) => {
+    element.removeAttribute("class");
+    if (
+      !element
+        .querySelector("td")
+        .innerText.toLowerCase()
+        .includes(search.toLowerCase())
+    )
+      element.setAttribute("class", "disabled");
+  });
+
+  paginacja();
 }
 function searchByText(text = "") {
-  const tBody = document.getElementById("table-body");
-  tBody.innerHTML = "";
-  createData();
-  if (text === "") {
-  } else {
-    const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
-    tBodyRows.forEach((element) => {
-      console.log(element);
-      if (
-        !element
-          .querySelectorAll("td")[1]
-          .innerText.toLowerCase()
-          .includes(text.toLowerCase())
-      ) {
-        element.remove();
-      }
-    });
-  }
+  const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
+  tBodyRows.forEach((element) => {
+    element.removeAttribute("class");
+    if (
+      !element
+        .querySelector("td ~ td")
+        .innerText.toLowerCase()
+        .includes(text.toLowerCase())
+    )
+      element.setAttribute("class", "disabled");
+  });
   paginacja();
+
+  // // const tBody = document.getElementById("table-body");
+  // // tBody.innerHTML = "";
+  // // createData();
+  // if (text !== "") {
+  //   const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
+  //   tBodyRows.forEach((element) => {
+  //     if (
+  //       element
+  //         .querySelectorAll("td")[1]
+  //         .innerText.toLowerCase()
+  //         .includes(text.toLowerCase())
+  //     ) {
+  //       element.removeAttribute("class");
+  //     } else element.setAttribute("class", "disabled");
+  //     // {
+  //     //   element.remove();
+  //     // }
+  //   });
+  // }
+  // paginacja();
 }
 function paginacja() {
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
+  const tBodyClassless = Array.from(
+    document.querySelectorAll("#table-body tr:not([class])")
+  );
   const allPages = document.getElementById("all-pages");
   const currPageValue =
     parseInt(document.getElementById("curr-page").value) || 1;
   const pagesValue = parseInt(document.getElementById("amount-item").value);
   const tempAllPages =
-    Math.ceil(tBody.length / pagesValue) > 0
-      ? Math.ceil(tBody.length / pagesValue)
+    Math.ceil(tBodyClassless.length / pagesValue) > 0
+      ? Math.ceil(tBodyClassless.length / pagesValue)
       : 1;
   allPages.innerText = `${tempAllPages}`;
+  if (document.getElementById("nothing-to-show") !== null)
+    document.getElementById("nothing-to-show").remove();
   if (currPageValue > 1 && currPageValue > allPages.innerText) {
     document.getElementById("curr-page").value--;
     paginacja();
   } else {
-    const tBodyDisplayed = tBody.filter(
-      (element) => element.style.display === "none"
-    );
-    if (tBody.length === 0) {
+    if (
+      tBodyClassless.length === 0 &&
+      document.getElementById("nothing-to-show") === null
+    ) {
       const nothingToShow = document.createElement("tr");
       nothingToShow.setAttribute("id", "nothing-to-show");
-      nothingToShow.innerHTML += `<td>"Brak elelemntów do wyświetlenia"</td>`;
+      nothingToShow.innerHTML += `<td></td><td>"Brak elementów do wyświetlenia"</td>`;
       document.getElementById("table-body").append(nothingToShow);
     } else {
-      tBody.forEach((element, index) => {
+      tBodyClassless.forEach((element, index) => {
         if (Math.floor(index / pagesValue) === currPageValue - 1) {
           element.removeAttribute("style");
         } else {
@@ -576,6 +596,11 @@ function paginacja() {
     }
     checkButtonPages();
   }
+  const searchById = document.getElementById("input-search-index");
+  searchById.setAttribute(
+    "placeholder",
+    `${tBody.length === 0 ? "0" : "1"}-${tBody.length}`
+  );
 }
 
 //////////////////  START ////////////////////
@@ -661,4 +686,6 @@ document.getElementById("sprawdzaj").addEventListener("click", () => {
   // test();
   // searchByIndex();
   // paginacja();
+  const nothing = document.getElementById("nothing-to-show");
+  console.log(nothing);
 });

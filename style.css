@@ -6,16 +6,17 @@
   --infoColor: rgb(0, 70, 0);
   --btnBgColor: rgba(10, 10, 10, 0.5);
   --mainBgColor: rgba(10, 10, 10, 0.863);
-  --transparent: rgba(0, 0, 0, 0);
   --notWhite: rgb(245, 245, 245);
   --notBlack: rgb(10, 10, 10);
 }
-body * {
+* {
   margin: 0;
   padding: 0;
   font-size: minmax(0.5rem, 6vw);
+  box-sizing: border-box;
 }
 body {
+  padding: 1rem 0;
   display: flex;
   flex-flow: column nowrap;
   gap: 2rem;
@@ -29,7 +30,6 @@ body {
 }
 header {
   display: flex;
-  margin: 0;
   flex-flow: nowrap;
   justify-content: space-around;
   align-items: center;
@@ -38,6 +38,7 @@ header {
   background-color: var(--notBlack);
   color: var(--btnBgHoverColor);
   text-shadow: 0 0 15px var(--notWhite);
+  border-radius: 0.5rem;
   cursor: default;
 }
 
@@ -438,11 +439,15 @@ li::before {
   color: var(--btnBgColor);
 }
 #wrapper-page-changer {
+  width: 100%;
+  border-top: 1px solid var(--mainColor);
+  border-radius: 0.5rem;
+  background-color: var(--btnBgColor);
+  padding: 1rem 0 0.5rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  color: var(--mainColor);
 }
 #btnDelChecked {
   position: absolute;
@@ -505,10 +510,9 @@ button:active {
   border-radius: 0.3rem;
 }
 
-#amount-item option:checked {
-  background-color: var(--transparent);
+.disabled {
+  display: none;
 }
-
 /* MEDIA */
 @media (max-width: 400px) {
   :root {

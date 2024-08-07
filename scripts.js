@@ -15,14 +15,14 @@ function createTable(key) {
   const searcher = document.createElement("div");
   const contenter = document.createElement("div");
   searcher.setAttribute("id", "wrapper-search");
-  searcher.setAttribute("class", "wrapper content");
+  searcher.setAttribute("class", "wrapper searcher");
   searcher.innerHTML = `
   <div class="wrapper-searcher">
-  <label for="input-search-index">Search by index</label>
+  <label for="input-search-index">Search by index:</label>
   <input type="number" id="input-search-index" class="searcher-by"/>
   </div>
   <div class="wrapper-searcher">
-  <label for="input-search-text">Search by text</label>
+  <label for="input-search-text">Search by text:</label>
   <input id="input-search-text" class="searcher-by" />
   </div>`;
   contenter.setAttribute("id", "wrapper-content");
@@ -651,7 +651,7 @@ document.addEventListener("keypress", ({ key }) => {
 });
 //przyciski menu + start strony
 const menuBtnWrapper = document.createElement("div");
-menuBtnWrapper.setAttribute("class", "wrapper buttons");
+menuBtnWrapper.setAttribute("class", "buttons wrapper");
 const logo = document.createElement("img");
 logo.src = "./media/images/logo.png";
 logo.setAttribute("id", "logo");
@@ -688,4 +688,7 @@ document.getElementById("sprawdzaj").addEventListener("click", () => {
   // paginacja();
   const nothing = document.getElementById("nothing-to-show");
   console.log(nothing);
+  // document.getElementById(
+  //   "accSize"
+  // ).value = `${window.innerWidth} x ${window.innerHeight}`;
 });

@@ -148,9 +148,8 @@ button:active {
 .searcher {
   flex-flow: row nowrap;
   position: relative;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  padding-right: 7rem;
+  justify-content: space-evenly;
+  padding: 0.5rem 7rem 0.5rem 1rem;
 }
 .content {
   padding: 0.4rem;
@@ -454,6 +453,19 @@ li::before {
   #curr-page {
     width: 3.5rem;
   }
+
+  .wrapper-searcher label {
+    display: none;
+  }
+  .searcher-by,
+  #input-search-index {
+    min-width: none;
+    max-width: none;
+    width: 15rem;
+  }
+  #input-search-index::placeholder:before {
+    content: "Search by index: ";
+  }
 }
 @media (max-width: 400px) {
   body {
@@ -480,5 +492,8 @@ li::before {
   .menuBtns {
     max-width: none;
     width: 100%;
+  }
+  .menuBtns:hover {
+    box-shadow: none;
   }
 }

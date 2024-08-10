@@ -34,51 +34,7 @@ function createTable(key) {
       </thead><tbody id="table-body"></tbody>`;
   contenter.append(tableContent);
 
-  // const rowKeys = Object.keys(rowData[key][0]);
-  // const $thead = document.getElementById("table-head");
-  // let head1 = "name";
-  // let head2, head3;
-  // switch (key.toLowerCase()) {
-  //   case "vehicles":
-  //     head2 = rowKeys[1];
-  //     head3 = rowKeys[2];
-  //     break;
-  //   case "starships":
-  //     head2 = rowKeys[1];
-  //     head3 = rowKeys[2];
-  //     break;
-  //   case "species":
-  //     head2 = rowKeys[1];
-  //     head3 = rowKeys[2];
-  //     break;
-  //   case "planets":
-  //     head2 = rowKeys[1];
-  //     head3 = rowKeys[6];
-  //     break;
-  //   case "people":
-  //     head2 = rowKeys[1];
-  //     head3 = rowKeys[7];
-  //     break;
-  //   case "films":
-  //     head1 = rowKeys[0];
-  //     head2 = rowKeys[2];
-  //     head3 = rowKeys[4];
-  //     break;
-  //   default:
-  //     break;
-  // }
-  // $thead.innerHTML = `<tr>
-  //       <th>ID</th>
-  //       <th>${head1.toUpperCase()}</th>
-  //       <th>${head2.toUpperCase()}</th>
-  //       <th>${head3.toUpperCase()}</th>
-  //       <th>CREATED</th>
-  //       <th>ACTIONS</th>
-  //     </tr>`;
-
   createData();
-  // checkBoxAddListener();
-  // createRowBtnActions(key);
 
   const pagesWrapper = document.createElement("div");
   pagesWrapper.setAttribute("id", "wrapper-page-changer");
@@ -93,10 +49,7 @@ function createTable(key) {
     </select>
   `;
   // ❰❱𒌍𒌋⫷⫸ ↪︎ ↩︎
-  // searcher.append(pagesWrapper);
   contenter.append(pagesWrapper);
-  // showTableBody();
-  paginacja();
 
   const btnChange = document.querySelectorAll(".btn-pages");
   const allPages = document.getElementById("all-pages");
@@ -104,29 +57,24 @@ function createTable(key) {
   const pages = document.getElementById("amount-item");
   const searchById = document.getElementById("input-search-index");
   const searchByTxt = document.getElementById("input-search-text");
-  // if (allPages.innerText === "1") btnChange[1].setAttribute("disabled", "");
   btnChange.forEach((btn, index) => {
     btn.addEventListener("click", () => {
       switch (index) {
         case 0:
           currPage.value--;
-          // checkButtonPages();
           break;
         case 1:
           currPage.value++;
-          // checkButtonPages();
           break;
         default:
           alert("Coś jest źle!!");
           break;
       }
-      // showTableBody();
       paginacja();
     });
   });
-
+  paginacja();
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  searchById.setAttribute("placeholder", `1-${tBody.length}`);
   let searchTempText = "nazwie";
   if (key === "films") searchTempText = "tytule";
   searchByTxt.setAttribute("placeholder", `Wyszukaj po ${searchTempText}`);
@@ -157,67 +105,16 @@ function createTable(key) {
       currPage.value = 1;
     }
   });
+
   pages.addEventListener("change", () => {
     const firstRow = Array.from(
-      document.querySelectorAll("#table-body tr")
+      document.querySelectorAll("#table-body tr:not([class])")
     ).findIndex((element) => element.style.display !== "none");
-    // let tempCurrPage;
     currPage.value = Math.floor(firstRow / pages.value) + 1;
     paginacja();
   });
-  ///////////////////////////////////////////////////////////////////////////////////////
-  //   // console.log(currPage.value);
-  //   ////
-  //   ////sprawdzić czy wproiwadzona wartość to liczba i potem czy nie przekracza zakresu allpages
-  //   ////
-  //   ////
-  //   ////
-  //   ////
-  //   ////
-  //   //// 19799773
-  // });
-  // pages.addEventListener("change", () => {
-  //   // console.log(pages.options[pages.selectedIndex].text);
-  //   //USTAWIĆ ODPOWIENDNIO currPage
-  //   //currPage.value=
-  //   // searchById.value = "";
-  //   // searchByText.value = "";
-  //   // const tempPages = parseInt(document.getElementById("all-pages").innerText);
-  //   // currPage.value = Math.floor(
-  //   //   (parseInt(document.getElementById("all-pages").innerText) *
-  //   //     parseInt(currPage.value)) /
-  //   //     tempPages
-  //   // );
-  //   showTableBody();
-  // });
-
-  // searchById.addEventListener("input", () => {
-  //   searchByText.value = "";
-  //   currPage.value = 1;
-  //   if (searchById.value > 0 && searchById.value <= rowData[key].length) {
-  //     // console.log("TempID:", tempId);
-  //     //////////////////////////
-  //     // showTableBody(parseInt(searchById.value));
-  //     ///////////////////////////
-  //   } else {
-  //     // showTableBody();
-  //     searchById.value = "";
-  //     console.log("złe dane");
-  //   }
-  //   checkButtonPages();
-  // });
-
-  // searchByTxt.addEventListener("input", () => {
-  //   //////////////////////////
-  //   currPage.value = 1;
-  //   searchById.value = "";
-  //   searchByText(searchByTxt.value);
-  //   // console.log(searchByText.value);
-  //   // if (searchByText.value === "") showTableBody();
-  //   // else showTableBody(searchByText.value);
-  //   // console.log("PAGES VALUE");
-  // });
 }
+
 function checkBoxAddListener() {
   let checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
   let btnDelChecked = null;
@@ -230,7 +127,6 @@ function checkBoxAddListener() {
     check.addEventListener("change", () => {
       checkBoxTab = Array.from(document.querySelectorAll(".checkBoxSelect"));
       let isSomeChecked = checkBoxTab.some((item) => item.checked);
-      // console.log("Czy zaznaczone?", isSomeChecked);
       if (!document.getElementById("btnDelChecked")) {
         btnDelChecked = document.createElement("button");
         btnDelChecked.textContent = "Remove all";
@@ -259,12 +155,11 @@ function createActionsBtns(parent, index) {
   const checkBox = document.createElement("input");
   checkBox.setAttribute("class", "checkBoxSelect");
   checkBox.setAttribute("type", "checkbox");
-  // checkBox.setAttribute("", "");
   const $td = document.createElement("td");
-  $td.setAttribute("class", "content-buttons");
+  $td.setAttribute("class", "actions-buttons");
   $td.append(editBtn, deleteBtn, checkBox);
   parent.append($td);
-  ///////////////////////////////////////////////////////////////////////////////////////
+
   editBtn.addEventListener("click", () => {
     createInfo(activeBtn, index);
     document
@@ -277,7 +172,6 @@ function createActionsBtns(parent, index) {
     parent.remove();
     paginacja();
   });
-  ///////////////////////////////////////////////////////////////////////////////////////
 }
 function setColor(select) {
   switch (select) {
@@ -332,14 +226,6 @@ function createInfo(btnName, index) {
   const infoRow = rowData[btnName][index];
   const windowInfo = document.createElement("div");
   windowInfo.setAttribute("id", "showInfoBox");
-  // windowInfo.setAttribute("class", "info");
-  // windowInfo.innerHTML = `
-  // <div id="info-content"><div class="info-title"><span><strong> ${
-  //   infoRow.name || infoRow.title
-  // }</strong></span>
-  //   <span id="closeInfoBtn">&times;</span>
-  // </div>
-  // </div>`;
   windowInfo.innerHTML = `<div id="info-wrapper">
     <div class="info-title"><span><strong> ${
       infoRow.name || infoRow.title
@@ -352,7 +238,6 @@ function createInfo(btnName, index) {
   const infoContent = document.getElementById("info-content");
   infoContent.innerHTML += "<ul>";
   if (btnName === "people") {
-    console.log(infoRow);
     infoContent.innerHTML += `
     <li><strong>NAME</strong> ${infoRow.name}</li>
     <li><strong>HEIGHT:</strong> ${infoRow.height}</li>
@@ -377,6 +262,9 @@ function createInfo(btnName, index) {
       if (key === "created" || key === "edited") {
         value = formatDate(value);
       }
+      if (key === "opening_crawl") {
+        value = value.split("\\r\\n").join("<br>");
+      }
       infoContent.innerHTML += `<li><strong>${key.toUpperCase()}:</strong>  ${value}</li>`;
     });
     infoContent.innerHTML += "</ul>";
@@ -384,16 +272,10 @@ function createInfo(btnName, index) {
 }
 function createData() {
   const activeBtn = document.querySelector(".active").innerText.toLowerCase();
-  // console.log(key);
   if (document.getElementById("nothing-to-show"))
     document.getElementById("nothing-to-show").remove();
-  // const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  // const currPage = document.getElementById("curr-page");
-  // console.log(rowData[activeBtn][0]);
   const rowKeys = Object.keys(rowData[activeBtn][0]);
-
   const $thead = document.getElementById("table-head");
-  // console.log("THEAD", $thead);
   const content = rowData[activeBtn];
   let head1 = "name";
   let head2, head3;
@@ -445,16 +327,12 @@ function createData() {
     const $td5 = document.createElement("td");
     $td1.innerHTML = `${index + 1}`;
     $td2.innerHTML = `${element[head1]}`;
-    $td3.innerHTML = `${element[head2]}`;
+    $td3.innerHTML = `${element[head2].split("\\r\\n").join("<br>")}`;
     $td4.innerHTML = `${element[head3]}`;
     $td5.innerHTML = `${formatDate(element.created)}`;
     $tr.append($td1, $td2, $td3, $td4, $td5);
     tbody.append($tr);
-
     createActionsBtns($tr, index);
-    // if (index > 9) {
-    //   document.getElementById(`row-${index}`).style.display = "none";
-    // }
   });
   checkBoxAddListener();
 }
@@ -462,9 +340,7 @@ function checkButtonPages() {
   const btnChange = document.querySelectorAll(".btn-pages");
   const allPages = document.getElementById("all-pages");
   const currPage = document.getElementById("curr-page");
-  // const pages = document.getElementById("amount-item");
   if (allPages.innerText === "1") {
-    // console.log(`ALL PAGES: ${allPages.innerText} = 1`);
     btnChange[0].setAttribute("disabled", "");
     btnChange[1].setAttribute("disabled", "");
   } else {
@@ -472,19 +348,13 @@ function checkButtonPages() {
       btnChange[0].removeAttribute("disabled");
       btnChange[1].removeAttribute("disabled");
       if (parseInt(currPage.value) === 1) {
-        // console.log(`Pierwszy warunek: ${currPage.value} > 1`);
         btnChange[0].setAttribute("disabled", "");
       } else {
-        // console.log("Else pierwszye");
         btnChange[0].removeAttribute("disabled");
       }
       if (parseInt(currPage.value) === parseInt(allPages.innerText)) {
-        // console.log(
-        //   `Drugi warunek: ${currPage.value} <= ${allPages.innerText}`
-        // );
         btnChange[1].setAttribute("disabled", "");
       } else {
-        // console.log("Else drugi");
         btnChange[1].removeAttribute("disabled");
       }
     } else {
@@ -494,32 +364,24 @@ function checkButtonPages() {
   }
 }
 function searchByIndex(search = "") {
-  // const tBody = document.getElementById("table-body");
-  // tBody.innerHTML = "";
-  // createData();
-  // if (isFinite(search)) {
-  //   const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
-  //   tBodyRows.forEach((element) => {
-  //     if (parseInt(element.querySelectorAll("td")[0].innerText) !== search) {
-  //       element.remove();
-  //     }
-  //   });
-  // }
-  // if (search === "") {
-  //   paginacja();
-  // } else {
   const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
   tBodyRows.forEach((element) => {
     element.removeAttribute("class");
+    // // zawiera nr indexu
+    // if (
+    //   !element
+    //     .querySelector("td")
+    //     .innerText.toLowerCase()
+    //     .includes(search.toLowerCase())
+    // )
+    // pokazuje wyłącznie ten index
     if (
-      !element
-        .querySelector("td")
-        .innerText.toLowerCase()
-        .includes(search.toLowerCase())
+      search !== "" &&
+      element.querySelector("td").innerText.toLowerCase() !==
+        search.toLowerCase()
     )
       element.setAttribute("class", "disabled");
   });
-
   paginacja();
 }
 function searchByText(text = "") {
@@ -535,27 +397,6 @@ function searchByText(text = "") {
       element.setAttribute("class", "disabled");
   });
   paginacja();
-
-  // // const tBody = document.getElementById("table-body");
-  // // tBody.innerHTML = "";
-  // // createData();
-  // if (text !== "") {
-  //   const tBodyRows = Array.from(document.querySelectorAll("#table-body tr"));
-  //   tBodyRows.forEach((element) => {
-  //     if (
-  //       element
-  //         .querySelectorAll("td")[1]
-  //         .innerText.toLowerCase()
-  //         .includes(text.toLowerCase())
-  //     ) {
-  //       element.removeAttribute("class");
-  //     } else element.setAttribute("class", "disabled");
-  //     // {
-  //     //   element.remove();
-  //     // }
-  //   });
-  // }
-  // paginacja();
 }
 function paginacja() {
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
@@ -604,12 +445,10 @@ function paginacja() {
 }
 
 //////////////////  START ////////////////////
-// console.log(Object.keys(rowData));
+
 const menuBtnNames = Object.keys(rowData);
 const $body = document.body;
 const $root = document;
-// let searcher = null;
-//header
 const header = document.createElement("header");
 header.innerHTML = `<div>Wpisz '<strong>YODA</strong>' albo '<strong>VADER</strong>' by skorzystać z tajnej mocy!!!</div>`;
 const radioWrapper = document.createElement("div");
@@ -656,7 +495,6 @@ const logo = document.createElement("img");
 logo.src = "./media/images/logo.png";
 logo.setAttribute("id", "logo");
 $body.append(header, menuBtnWrapper, logo);
-
 menuBtnNames.forEach((btnName, index) => {
   const btn = document.createElement("button");
   menuBtnWrapper.append(btn);
@@ -671,24 +509,4 @@ menuBtnNames.forEach((btnName, index) => {
     btn.setAttribute("class", `menuBtns active`);
     createTable(btnName);
   });
-});
-
-document.getElementById("sprawdzaj").addEventListener("click", () => {
-  // const text = document.getElementById("input-search-text").value;
-  // console.log("text", text);
-  // searchByText(text);
-  // changeCurrPage();
-  // checkButtonPages();
-  // showTableBody();
-  // const sprawdz = document.querySelector(".active").innerText;
-  // console.log(sprawdz);
-  // createData();
-  // test();
-  // searchByIndex();
-  // paginacja();
-  const nothing = document.getElementById("nothing-to-show");
-  console.log(nothing);
-  // document.getElementById(
-  //   "accSize"
-  // ).value = `${window.innerWidth} x ${window.innerHeight}`;
 });

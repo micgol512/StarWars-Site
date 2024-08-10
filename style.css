@@ -1,5 +1,5 @@
 :root {
-  font-size: 16px;
+  font-size: clamp(6px, 2vw, 16px);
   --mainColor: rgb(0, 255, 0);
   --btnBgHoverColor: rgba(0, 255, 0, 0.425);
   --btnHoverColor: rgb(207, 241, 206);
@@ -13,11 +13,9 @@
   font-size: 1rem;
   margin: 0;
   padding: 0;
-  /* font-size: minmax(0.5rem, 6vw); */
   box-sizing: border-box;
 }
 body {
-  /* padding: 1rem 0; */
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -29,270 +27,23 @@ body {
 header {
   display: flex;
   flex-flow: nowrap;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  width: min(100vw, 1920px);
+  padding: 0.5rem 0rem;
+  width: 100%;
   background-color: var(--notBlack);
   color: var(--btnBgHoverColor);
   text-shadow: 0 0 15px var(--notWhite);
   border-radius: 0.5rem;
 }
-
-/* header > div > strong {
-  cursor: url("./media/helpfull/Yoda.png"), pointer;
-}
-header > div > strong ~ strong {
-  cursor: url("./media/helpfull/DarthVader.png"), pointer;
-} */
-.menuBtns {
-  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
-  background-color: var(--btnBgColor);
-  border: 1px solid var(--mainColor);
-  padding: 0.4rem;
-  color: var(--mainColor);
-  text-shadow: 0 0 1px var(--notBlack), 0 0 15px var(--notBlack);
-  min-width: 6.25rem;
-  max-width: 12.5rem;
-  /* height: min(7vw, 85px); */
-  height: 7vw;
-  min-height: 2rem;
-  max-height: 6.25rem;
-  border-radius: 15px;
-  transition: all 0.2s ease-in-out, width 0s, height 0s;
-  flex-grow: 1;
-  cursor: pointer;
-}
-.menuBtns:hover {
-  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor),
-    0 0 30px var(--mainColor), 0 0 60px var(--mainColor),
-    0 0 120px var(--mainColor);
-  text-shadow: 0 0 5px black;
-  background-color: var(--btnBgHoverColor);
-  color: var(--btnHoverColor);
-}
-.active,
-.active:hover {
-  background-color: var(--mainColor);
-  font-weight: bold;
-  scale: 1.2;
-  color: var(--btnHoverColor);
-  text-shadow: 0 0 5px black;
-}
-
-.wrapper {
-  display: flex;
-  flex-flow: row wrap;
-  width: Min(75vw, 1920px);
-  justify-content: space-around;
-  /* flex-grow: 1; */
-}
-.buttons {
-  gap: 15px;
-  justify-content: center;
-  max-height: 120px;
+button:active {
+  transform: scale(0.9);
 }
 #logo {
+  margin-top: 2rem;
   align-self: center;
   width: Min(40vw, 800px);
   height: auto;
-}
-.searcher,
-.content {
-  display: flex;
-  align-self: center;
-  border: 1px solid var(--mainColor);
-  padding: 0.4rem;
-  color: var(--mainColor);
-  background-color: var(--mainBgColor);
-  border-radius: 1rem;
-}
-#wrapper-content {
-  background-color: var(--mainBgColor);
-}
-
-#table-content {
-  padding: 0.25rem;
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  color: var(--mainColor);
-}
-#table-head {
-  background-color: var(--mainColor);
-  color: rgb(240, 240, 240);
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
-  text-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
-}
-/* #table-body * {
-  padding: 0.75rem;
-} */
-#table-body tr {
-  border-bottom: 1rem solid rgba(0, 0, 0, 0);
-}
-#table-head tr {
-  border-radius: 0.5rem;
-}
-#table-head th {
-  color: var(--notWhite);
-  border-left: 10px solid var(--mainColor);
-}
-#table-head th:first-child,
-#table-body td:first-child {
-  border-radius: 0.5rem 0 0 0.5rem;
-  padding-left: 0.5rem;
-  border-left: none;
-}
-#table-head th:last-child,
-#table-body td:last-child {
-  border-radius: 0 0.5rem 0.5rem 0;
-  padding-right: 0.5rem;
-}
-#table-body td:nth-child(5) {
-  text-wrap: nowrap;
-}
-#table-body tr:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-}
-.content-buttons {
-  display: flex;
-  flex-flow: row nowrap; /* w rzędzie lepiej wyglada wg mnie :) */
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-}
-/* .content-buttons button {
-  width: 100%;
-} */
-.showBtn,
-.deleteBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  /* padding: 0; */
-}
-.showBtn {
-  background-color: rgb(0, 150, 0);
-  border: 1px solid rgb(0, 100, 0);
-}
-.showBtn:hover {
-  background-color: darkgreen;
-}
-.deleteBtn {
-  background-color: firebrick;
-  background-image: url("./media/helpfull/trash.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 1.2rem;
-  border: 1px solid rgb(100, 0, 0);
-}
-.deleteBtn:hover {
-  background-color: darkred;
-}
-/* info Box */
-#showInfoBox {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(3px);
-}
-
-#info-wrapper {
-  display: flex;
-  width: 90%;
-  height: 70%;
-  position: relative;
-  flex-flow: column nowrap;
-  margin: 10% auto;
-  border-radius: 0 0 0.5rem 0.5rem;
-  width: min(75%, 1000px);
-  height: 70%;
-}
-.info-title {
-  /* left: 0;
-  top: 0;
-  position: absolute; */
-  background-color: var(--mainColor);
-  width: 100%-1px;
-  /* border: 1px solid var(--mainColor); */
-  /* border-bottom: 1px solid var(--infoColor); */
-  border-radius: 0.5rem 0.5rem 0 0;
-  /* margin-bottom: 1rem;
-  margin-top: -3rem; */
-}
-.info-title span strong {
-  padding-left: 1rem;
-  font-size: 1.5rem;
-  color: var(--notBlack);
-}
-
-#info-content {
-  position: relative;
-  background-color: rgb(245, 245, 245);
-  padding: 0.5rem 0.5rem;
-  border: 1px solid var(--mainColor);
-  border-top: 1px solid var(--infoColor);
-  border-radius: 0 0 0.5rem 0.5rem;
-  height: auto;
-  max-height: 60%;
-  /* max-width: 1920px; */
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-#info-content::-webkit-scrollbar {
-  background-color: var(--infoColor);
-  border-radius: 0 0 0.5rem;
-}
-#info-content::-webkit-scrollbar-thumb {
-  background-color: var(--mainColor);
-  border-radius: 0.5rem;
-}
-#closeInfoBtn {
-  position: absolute;
-  top: -0.15rem;
-  right: 0.25rem;
-  color: var(--mainBgColor);
-  float: right;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-#closeInfoBtn:hover,
-#closeInfoBtn:focus {
-  color: var(--notBlack);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-ul {
-  width: 100%;
-}
-li {
-  display: flex;
-  justify-content: baseline;
-  align-items: baseline;
-  gap: 0.5rem;
-  color: var(--infoColor);
-  width: 100%;
-  list-style-type: none;
-}
-li strong {
-  color: rgb(10, 10, 10);
-}
-li::before {
-  padding-left: 0.5rem;
-  content: "𒀽";
 }
 #radio-wrapper {
   display: flex;
@@ -306,9 +57,8 @@ li::before {
   height: 2rem;
   border-radius: 1rem;
   cursor: pointer;
-  box-shadow: rgba(255, 255, 255, 0.15) 0 1px 1px,
-    inset rgba(0, 0, 0, 0.5) 0 0 0 1px;
-  background-color: rgba(0, 0, 0, 0.308);
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.15),
+    inset 0 0 1px 1px rgba(0, 0, 0, 0.5);
   background-repeat: no-repeat;
   transition: background-position 0.15s cubic-bezier(0.8, 0, 1, 1),
     transform 0.25s cubic-bezier(0.8, 0, 1, 1);
@@ -353,7 +103,7 @@ li::before {
     rgba(51, 255, 68, 0.3) 28%,
     rgba(0, 153, 13, 0) 70%
   );
-  cursor: url("./media/helpfull/YodaLightsaber.png"), pointer;
+  cursor: url("./media/images/helpfull/YodaLightsaber.png"), pointer;
 }
 #site-2 {
   background-color: rgba(50, 0, 0, 0.3);
@@ -363,7 +113,7 @@ li::before {
     rgba(255, 51, 51, 0.3) 28%,
     rgba(153, 0, 0, 0) 70%
   );
-  cursor: url("./media/helpfull/DarthVaderLightsaber.png"), pointer;
+  cursor: url("./media/images/helpfull/DarthVaderLightsaber.png"), pointer;
 }
 #site-3 {
   background-color: rgba(0, 38, 50, 0.3);
@@ -373,31 +123,252 @@ li::before {
     rgba(51, 231, 255, 0.3) 28%,
     rgba(0, 130, 153, 0) 70%
   );
-  cursor: url("./media/helpfull/ObiLightsaber.png"), pointer;
+  cursor: url("./media/images/helpfull/ObiLightsaber.png"), pointer;
 }
-#wrapper-search {
-  position: relative;
-  box-sizing: border-box;
-  justify-content: flex-start;
-  /* width: Min(75vw, 1920px); */
-  padding: 0.5rem 4rem;
-  gap: 1rem;
-}
-.wrapper-searcher {
+
+.wrapper {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  width: Min(90vw, 1920px);
+}
+.buttons {
+  flex-flow: wrap;
+  gap: 15px;
+  justify-content: center;
+  max-height: 120px;
+}
+.searcher,
+.content {
+  gap: 1rem;
+  align-self: center;
+  border: 1px solid var(--mainColor);
+  color: var(--mainColor);
+  background-color: var(--mainBgColor);
+  border-radius: 1rem;
+}
+.searcher {
+  flex-flow: row nowrap;
+  position: relative;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  padding-right: 7rem;
+}
+.content {
+  padding: 0.4rem;
+  flex-flow: column nowrap;
+}
+.menuBtns {
+  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+  background-color: var(--btnBgColor);
+  border: 1px solid var(--mainColor);
+  color: var(--mainColor);
+  text-shadow: 0 0 1px var(--notBlack), 0 0 15px var(--notBlack);
+  min-width: 6.25rem;
+  max-width: 7rem;
+  height: 7vw;
+  min-height: 2rem;
+  max-height: 6.25rem;
+  border-radius: 15px;
+  flex-grow: 1;
+  cursor: pointer;
+}
+.menuBtns:hover {
+  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor),
+    0 0 30px var(--mainColor), 0 0 60px var(--mainColor),
+    0 0 120px var(--mainColor);
+  text-shadow: 0 0 5px black;
+  background-color: var(--btnBgHoverColor);
+  color: var(--btnHoverColor);
+  z-index: 2;
+}
+.active,
+.active:hover {
+  background-color: var(--mainColor);
+  font-weight: bold;
+  scale: 1.2;
+  color: var(--btnHoverColor);
+  text-shadow: 0 0 5px black;
+  z-index: 2;
+}
+
+#table-content {
+  border-collapse: collapse;
+  text-align: left;
+  color: var(--mainColor);
+}
+#table-head {
+  background-color: var(--mainColor);
+  color: rgb(240, 240, 240);
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+  text-shadow: 0 0 5px var(--mainColor), 0 0 15px var(--mainColor);
+}
+#table-body {
+  vertical-align: text-top;
+}
+#table-body td {
+  text-wrap: balance;
+  padding: 0.25rem;
+}
+
+#table-head tr {
+  border-radius: 0.5rem;
+}
+#table-head th {
+  color: var(--notWhite);
+  border-left: 0.8rem solid var(--mainColor);
+}
+#table-head th:first-child,
+#table-body td:first-child {
+  border-radius: 0.5rem 0 0 0.5rem;
+  padding-left: 0.5rem;
+  border-left: none;
+}
+#table-head th:last-child,
+#table-body td:last-child {
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding-right: 0.5rem;
+}
+#table-body td:nth-child(5) {
+  text-wrap: nowrap;
+}
+#table-body tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+}
+.actions-buttons {
+  display: flex;
+  flex-flow: row nowrap; /* w rzędzie lepiej wyglada wg mnie :) */
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+.showBtn,
+.deleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+.showBtn {
+  background-color: rgb(0, 150, 0);
+  border: 1px solid rgb(0, 100, 0);
+}
+.showBtn:hover {
+  background-color: darkgreen;
+}
+.deleteBtn {
+  background: firebrick url("./media/images/helpfull/trash.png") center/1.2rem
+    no-repeat;
+  border: 1px solid rgb(100, 0, 0);
+}
+.deleteBtn:hover {
+  background-color: darkred;
+}
+#showInfoBox {
+  display: block;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: max(100vw, 380px);
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+}
+#info-wrapper {
+  display: flex;
+  width: 90%;
+  height: 70%;
+  position: relative;
+  flex-flow: column nowrap;
+  margin: 10% auto;
+  border-radius: 0 0 0.5rem 0.5rem;
+  width: min(75%, 1000px);
+  height: 70%;
+}
+.info-title {
+  background-color: var(--mainColor);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.info-title span strong {
+  padding-left: 1rem;
+  font-size: 1.5rem;
+  color: var(--notBlack);
+}
+#info-content {
+  position: relative;
+  background-color: rgb(245, 245, 245);
+  padding: 0.5rem 0.5rem;
+  border: 1px solid var(--mainColor);
+  border-top: 1px solid var(--infoColor);
+  border-radius: 0 0 0.5rem 0.5rem;
+  height: auto;
+  max-height: 60%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#info-content::-webkit-scrollbar {
+  background-color: var(--infoColor);
+  border-radius: 0 0 0.5rem;
+}
+#info-content::-webkit-scrollbar-thumb {
+  background-color: var(--mainColor);
+  border-radius: 0.5rem;
+}
+#closeInfoBtn {
+  position: absolute;
+  top: -0.15rem;
+  right: 0.25rem;
+  color: var(--mainBgColor);
+  float: right;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+#closeInfoBtn:hover,
+#closeInfoBtn:focus {
+  color: var(--notBlack);
+  text-decoration: none;
+  cursor: pointer;
+}
+ul {
+  width: 100%;
+}
+li {
+  display: flex;
+  justify-content: baseline;
   align-items: baseline;
+  gap: 0.5rem;
+  color: var(--infoColor);
+  width: 100%;
+  list-style-type: none;
+}
+li strong {
+  color: rgb(10, 10, 10);
+}
+li::before {
+  padding-left: 0.5rem;
+  content: "𒀽";
 }
 .searcher-by {
-  /* width: 2.5rem; */
   height: 1.5rem;
   border-radius: 0.3rem;
   border: 1px solid;
   color: var(--infoColor);
   padding-left: 3px;
 }
-
+.wrapper-searcher {
+  display: flex;
+  flex-flow: wrap;
+  gap: 1px;
+  align-items: baseline;
+}
+#input-search-index {
+  width: 5rem;
+}
 #input-search-index::placeholder {
   color: var(--btnBgColor);
 }
@@ -417,8 +388,8 @@ li::before {
 }
 #btnDelChecked {
   position: absolute;
-  top: 0px;
-  right: 1rem;
+  top: 0;
+  right: 0;
   border-radius: 1rem;
   border: 1px solid var(--infoColor);
   height: 2.5rem;
@@ -430,9 +401,6 @@ li::before {
 }
 #btnDelChecked:hover {
   color: var(--mainColor);
-}
-button:active {
-  transform: scale(0.9);
 }
 .btn-pages {
   width: 1rem;
@@ -473,95 +441,44 @@ button:active {
   background-color: var(--mainBgColor);
   border-radius: 0.3rem;
 }
-
 .disabled {
   display: none;
 }
-/* MEDIA */
-/* @media (max-width: 400px) {
-  :root {
-    font-size: 5px;
-  }
-} */
-@media (max-width: 550px) {
-  :root {
-    font-size: 8px;
-  }
-  * {
-    /* background-color: aqua; */
-  }
-  body {
-    gap: 0.5rem;
-  }
-  header {
-    width: 96vw;
-  }
-  #wrapper-search {
-    flex-flow: column nowrap;
-    align-items: center;
-  }
-  #table-body * {
-    padding: 0.1rem;
-  }
-  .wrapper {
-    display: flex;
-    flex-flow: row wrap;
-    gap: 1px;
-    width: Min(90vw, 1920px);
-    justify-content: space-around;
-    /* flex-grow: 1; */
-  }
-  .buttons {
-    /* width: 100%; */
-    gap: 0.25rem;
-    flex-flow: column nowrap;
-    /* align-self: center; */
-    /* background-color: aqua; */
-    justify-content: center;
-    align-items: center;
-    /* max-height: 120px; */
-  }
-  .menuBtns {
-    min-width: none;
-    max-width: none;
-    width: 100%;
-    height: 0.5rem;
-    /* width: 1rem;
-    height: 1rem; */
-  }
-  .active,
-  .active:hover {
-    scale: 1.05;
-  }
-}
-
-@media (max-width: 1110px) {
-  :root {
-    font-size: 10px;
-  }
-  * {
-  }
+@media (max-width: 720px) {
   body {
     gap: 1rem;
   }
-  .wrapper {
-    width: 90vw;
+  .buttons {
+    gap: 0.5rem;
   }
-  #table-body * {
-    padding: 0.1rem;
+  #curr-page {
+    width: 3.5rem;
   }
-  /* #table-head {
-  } */
-  #btnDelChecked {
-    right: 0rem;
-  }
-  #wrapper-search {
-    padding: 0.5rem 0.5rem;
+}
+@media (max-width: 400px) {
+  body {
+    gap: 0.25rem;
   }
   header {
-    /* width: 90vw; */
+    margin-bottom: 1rem;
   }
-  /* .menuBtns {
-    height: minmax(5vw, 64px);
-  } */
+  button:active {
+    transform: scale(0.98);
+  }
+  .active,
+  .active:hover {
+    scale: 1;
+  }
+  .wrapper {
+    width: max(95vw, 380px);
+  }
+  .buttons {
+    flex-flow: column nowrap;
+    gap: 0.25rem;
+    align-items: center;
+  }
+  .menuBtns {
+    max-width: none;
+    width: 100%;
+  }
 }

@@ -75,9 +75,9 @@ function createTable(key) {
   });
   paginacja();
   const tBody = Array.from(document.querySelectorAll("#table-body tr"));
-  let searchTempText = "nazwie";
-  if (key === "films") searchTempText = "tytule";
-  searchByTxt.setAttribute("placeholder", `Wyszukaj po ${searchTempText}`);
+  let searchTempText = "name";
+  if (key === "films") searchTempText = "title";
+  searchByTxt.setAttribute("placeholder", `Search by ${searchTempText}.`);
   ///////////////////////////////////////////////////////////////////////////////////////
   searchById.addEventListener("input", () => {
     searchByTxt.value = "";
@@ -440,7 +440,7 @@ function paginacja() {
   const searchById = document.getElementById("input-search-index");
   searchById.setAttribute(
     "placeholder",
-    `${tBody.length === 0 ? "0" : "1"}-${tBody.length}`
+    `${tBody.length === 0 ? "0" : "1"} from ${tBody.length}`
   );
 }
 

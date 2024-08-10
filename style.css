@@ -366,7 +366,7 @@ li::before {
   align-items: baseline;
 }
 #input-search-index {
-  width: 5rem;
+  width: 6rem;
 }
 #input-search-index::placeholder {
   color: var(--btnBgColor);
